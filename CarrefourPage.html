@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ludovic Stoj | Elite Health & Tech</title>
+    
+    <!-- Scripts & Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <!-- Fonts -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        /* === LE FOND DE PAGE (FIBRES BLEUES) === */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #E6E6E6;
+            overflow-x: hidden;
+            margin: 0;
+            
+            /* L'image de fond IPFS que tu voulais */
+            background-image: url('https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeid3tvqym4reyovhrbhen455yy4wqtsjdvbe77cyg3t44uxalwjkhm');
+            
+            /* Réglages pour que ça fasse "Luxe" et pas "Mosaïque" */
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed; /* Effet Parallaxe */
+            background-repeat: no-repeat;
+            background-color: #050505; /* Couleur de secours si l'image charge mal */
+        }
+
+        /* Le filtre noir transparent pour que le texte reste lisible */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 4, 10, 0.85); /* 85% de noir bleuté */
+            z-index: -1; /* Derrière le texte */
+            pointer-events: none;
+        }
+
+        /* Titre Or Dégradé */
+        .gold-text-title {
+            background: linear-gradient(to right, #d4af37, #f6e27a, #b8860b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+        }
+
+        /* === CINEMATIC CARDS === */
+        .cine-card {
+            position: relative;
+            height: 400px;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
+            group: group;
+            background-color: #000; /* Fond noir par défaut */
+        }
+
+        .cine-card-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.8s ease, filter 0.5s ease;
+            z-index: 0;
+            filter: brightness(0.75) contrast(1.1); 
+        }
+
+        .cine-overlay {
+            position: absolute;
+            inset: 0;
+            
+            /* MODIFICATION ICI : Le noir s'arrête plus bas et est moins opaque au milieu */
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 100%);
+            
+            z-index: 1;
+        }
+
+        .cine-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+        }
+
+        .cine-card:hover {
+            border-color: #f6e27a;
+            box-shadow: 0 20px 40px -5px rgba(212, 175, 55, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .cine-card:hover .cine-card-bg {
+            transform: scale(1.1);
+            filter: brightness(0.8) contrast(1.0);
+        }
+        
+        .floating-icon {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 2;
+            width: 3rem;
+            height: 3rem;
+            opacity: 0.9;
+            transition: all 0.5s ease;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+        }
+        .cine-card:hover .floating-icon {
+            transform: scale(1.15) rotate(10deg);
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.8));
+        }
+
+        .gold-svg-stroke {
+            stroke: url(#goldGradient);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .card-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 10px rgba(0,0,0,1);
+            line-height: 1.2;
+        }
+        .card-desc {
+            font-size: 0.95rem;
+            color: #e0e0e0;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.9);
+            font-weight: 500;
+        }
+        
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #f6e27a;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: gap 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,1);
+        }
+        .cine-card:hover .action-btn {
+            gap: 1rem;
+            color: #fff;
+        }
+
+        .profile-container {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 2rem;
+            padding: 3px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #b8860b, #f6e27a);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #000;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Dégradé Or pour les SVG -->
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#b8860b" />
+                <stop offset="50%" stop-color="#f6e27a" />
+                <stop offset="100%" stop-color="#d4af37" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- Conteneur Principal -->
+    <div class="min-h-screen flex flex-col items-center justify-center px-4 py-12 backdrop-blur-[0px]">
+        
+        <!-- Header -->
+        <div class="text-center mb-16 animate-fade-in-down max-w-2xl">
+            <div class="profile-container">
+                <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreidbwr2g3b2v266wfrujeeobyvx2ii4iyhkdou3nadqck5sx6lpvly" 
+                     alt="Ludovic Stoj" class="profile-img">
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-black mb-3 tracking-tight">
+                <span class="gold-text-title">LUDOVIC STOJ</span>
+            </h1>
+            <p class="text-gray-300 text-lg font-light tracking-widest uppercase mb-4">
+                Health | Luxury | Finance
+            </p>
+            <div class="w-24 h-1 bg-gradient-to-r from-transparent via-yellow-600 to-transparent mx-auto"></div>
+        </div>
+
+        <!-- GRID CINEMATIC -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl w-full px-2">
+
+            <!-- CARD 1: MEDICAL TECH (Site Web & IA) -->
+            <!-- J'ai mis ton image "Tech Bio" ici en attendant que tu génères la nouvelle -->
+            <a href="https://digitalcraftersservices.netlify.app/?v=2" class="block group">
+                <div class="cine-card">
+                    <div class="cine-card-bg" style="background-image: url('https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreidss4loonvgbnda5wbg55ztbashu6gsfe3dkdc6xzcdjaw6jh4tx4');"></div>
+                    <div class="cine-overlay"></div>
+                    
+                    <div class="floating-icon">
+                        <i data-feather="cpu" class="gold-svg-stroke w-full h-full"></i>
+                    </div>
+
+                    <div class="cine-content">
+                        <h2 class="card-title text-gradient-to-r from-white to-gray-300">Healthcare Pros</h2>
+                        <p class="card-desc">
+                            AI Receptionists & Premium Web Design. Automate your medical practice.
+                        </p>
+                        <span class="action-btn">
+                            Explore Solutions <i data-feather="arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- CARD 2: DUBAI LUXURY (Kiné & Manager Aquatique) -->
+            <a href="https://kinergy.netlify.app/" class="block group">
+                <div class="cine-card">
+                    <div class="cine-card-bg" style="background-image: url('https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreibamqlwqwev4xkb2ubj67wb6uimk6x7nb3xgaxfakmjlmf2ccyprq');"></div>
+                    <div class="cine-overlay"></div>
+
+                    <div class="floating-icon">
+                        <i data-feather="droplet" class="gold-svg-stroke w-full h-full"></i>
+                    </div>
+
+                    <div class="cine-content">
+                        <h2 class="card-title">Hospitality & Wellness</h2>
+                        <p class="card-desc">
+                            Elite Physiotherapy & Aquatic Management. Operational excellence for 5-Star Resorts.
+                        </p>
+                        <span class="action-btn">
+                            View Portfolio <i data-feather="arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- CARD 3: TRADING LAB (Algorithmes) -->
+            <a href="https://inner-circle-trading-elite.netlify.app/" class="block group">
+                <div class="cine-card">
+                    <div class="cine-card-bg" style="background-image: url('https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeiflwgzxe6nxipfdbvdy55d7dikvaqabgv72ywhnlvvk27fimjpvfu');"></div>
+                    <div class="cine-overlay"></div>
+
+                    <div class="floating-icon">
+                        <i data-feather="layers" class="gold-svg-stroke w-full h-full"></i>
+                    </div>
+
+                    <div class="cine-content">
+                        <h2 class="card-title">Algorithmic Lab</h2>
+                        <p class="card-desc">
+                            High-Frequency Trading Bots & Web3 Systems. 10k+ lines of Python engineering.
+                        </p>
+                        <span class="action-btn">
+                            Enter The Lab <i data-feather="arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <footer class="mt-20 text-center opacity-70">
+            <div class="flex justify-center gap-6 mb-4">
+                <a href="#" class="text-white hover:text-yellow-500 transition"><i data-feather="instagram"></i></a>
+                <a href="https://wa.me/34612230618" target="_blank" class="text-white hover:text-yellow-500 transition">
+                    <i data-feather="message-circle"></i>
+                </a>
+                <!-- LINKEDIN CORRECTEMENT LIÉ -->
+                <a href="https://www.linkedin.com/in/ludovic-stoj-3778b0352/" target="_blank" class="text-white hover:text-yellow-500 transition">
+                    <i data-feather="linkedin"></i>
+                </a>
+            </div>
+            <p class="text-xs text-gray-500">© 2026 LUDOVIC STOJ. DESIGNED FOR EXCELLENCE.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Init Icons
+        feather.replace();
+
+        // Init Vanta (Background animé)
+        VANTA.GLOBE({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0xd4af37,
+            color2: 0xb8860b,
+            size: 0.8,
+            backgroundColor: 0x050505
+        })
+    </script>
+</body>
+</html>
