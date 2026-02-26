@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ludovic Stoj | Elite Hospitality & Nightlife</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #000; color: #fff; overflow-x: hidden; }
+        
+        /* --- VERSION MOBILE AVEC VOILE --- */
+            .global-bg { 
+                position: fixed; 
+                inset: 0; 
+                z-index: -10; 
+                /* Le voile noir (rgba 0,0,0,0.75) est placé AVANT l'url de l'image */
+                background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), 
+                                  url('https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeih36r65ywppcq75muld6mh6keajwxj7s67leo7diaqxua6mal4y3q'); 
+                background-size: cover;
+                background-position: center;
+                /* Optionnel : on réduit un peu la saturation pour le côté "Elite" */
+                filter: saturate(0.8);
+            }
+
+            /* --- VERSION PC AVEC VOILE --- */
+            @media (min-width: 1024px) {
+                .global-bg { 
+                    /* On répète le voile pour l'image PC également */
+                    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), 
+                                      url('https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeide27ww2xraruvnggzbrwuxu7c5buud3nxx4h47svclzecendazue'); 
+                }
+            }
+
+        .gold-gradient { 
+            background: linear-gradient(90deg, #8a6628, #dfb857, #fff9d1, #dfb857, #8a6628); 
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            animation: shine 4s linear infinite; 
+            padding-right: 0.1em;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        .btn-gold { 
+            background: linear-gradient(135deg, #8a6628 0%, #f6e27a 30%, #fff9d1 50%, #f6e27a 70%, #8a6628 100%);
+            color: #000; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3); transition: 0.4s;
+        }
+        .btn-gold:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5); }
+
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px);
+            border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 2rem;
+        }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .urgent-badge {
+            animation: pulse 2s infinite;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid #dfb857;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+        .hero-title { padding-right: 0.2em; display: inline-block; 
+}
+
+
+
+        .sapphire-card { background: rgba(2, 12, 27, 0.4) !important; backdrop-filter: blur(20px); border: 1px solid #8a6628 !important; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; border-radius: 2.5rem; }
+    
+        .card-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem; z-index: 30; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%); }
+
+        .corner-detail { position: absolute; width: 15px; height: 15px; border-color: rgba(212, 175, 55, 0.7); z-index: 35; }
+
+        @media (max-width: 1023px) {
+            .pillars-mobile-wrapper { display: flex; flex-direction: column; gap: 2rem; }
+            .pillar-item { height: 70vh; display: flex; align-items: center; justify-content: center; perspective: 1200px; width: 100%; }
+            .pillar-card { width: 92%; height: 100%; opacity: 0; transform: scale(0.7) translateZ(-300px); transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1); backface-visibility: hidden; will-change: transform, opacity; }
+            .pillar-card.active { opacity: 1; transform: scale(1) translateZ(0); }
+        }
+
+        @media (min-width: 1024px) {
+            .pillars-mobile-wrapper { display: flex; flex-direction: row; height: 600px; gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+            .pillar-item { flex: 1; height: 100%; transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+            .pillar-item:hover { flex: 3; }
+            .pillar-card { height: 100%; width: 100%; }
+        }
+
+
+         /* Superposition et animation de fondue */
+.pillar-slideshow {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+.pillar-slideshow img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out; /* Vitesse de la fondue */
+}
+.pillar-slideshow img.active-slide {
+    opacity: 1;
+    z-index: 2;
+}
+    </style>
+</head>
+<body>
+    <div class="global-bg"></div>
+
+    <!-- HERO SECTION -->
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
+        <div class="urgent-badge px-6 py-2 rounded-full mb-8">
+            <span class="gold-gradient text-[10px] font-black uppercase tracking-[0.3em]">Available for Trial Shift Tonight</span>
+        </div>
+
+        <h1 class="hero-title text-5xl md:text-8xl font-900 uppercase tracking-tighter mb-4 reveal active">
+            LUDOVIC <span class="gold-gradient italic">STOJ</span>
+        </h1>
+        <h2 class="text-sm md:text-2xl font-bold uppercase tracking-[0.5em] text-gray-400 mb-12 reveal active">
+            French Elite Hospitality
+        </h2>
+
+        <div class="flex flex-col md:flex-row gap-4 reveal active">
+        <!-- Bouton principal -->
+        <a href="https://wa.me/34612230618" class="btn-gold px-12 py-6 rounded-full text-xs text-center">
+            Hire the Energy
+        </a>
+        
+        <!-- Nouveau bouton CV (Style Verre / Outline) -->
+        <a href="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeicmcnoeei4cxesnsqtfh3gx7tnwwfya3mvpm3xr2cb5naer4jwxhm" target="_blank" class="px-12 py-6 rounded-full text-xs font-black uppercase tracking-widest border border-[#dfb857]/50 hover:bg-[#dfb857]/10 transition backdrop-blur-md flex items-center justify-center gap-2">
+            <i data-feather="download" class="w-4 h-4"></i> Download CV
+        </a>
+    </div>
+    </section>
+
+   
+
+    <!-- THE PITCH BOX -->
+    <section class="py-20 px-6">
+        <div class="max-w-3xl mx-auto glass-card p-12 text-center border-[#dfb857]/50 reveal">
+            <span class="text-[10px] uppercase tracking-[0.5em] text-gray-500 mb-6 block">Why me?</span>
+            <p class="text-xl md:text-2xl italic font-light leading-relaxed mb-10">
+                "I don't just serve drinks; I manage the <span class="text-white font-bold underline decoration-[#dfb857]">vibe</span> & combine French elegance with a high-performance mindset to ensure your VIP guests receive a 5-star experience every single night."
+            </p>
+            <div class="flex justify-center gap-10">
+                <div class="flex justify-center gap-6 md:gap-10"> <!-- Augmentation légère du gap -->
+                    <div class="text-center">
+                        <span class="block text-2xl font-bold gold-gradient">100%</span>
+                        <span class="text-[8px] uppercase tracking-[0.3em] text-gray-500">Reliable</span>
+                    </div>
+                    
+                    <!-- BLOC LANGUES RÉVISÉ -->
+                    <div class="text-center">
+                        <span class="block text-xl md:text-2xl font-bold gold-gradient">Trilingual</span>
+                        <span class="text-[8px] uppercase tracking-[0.3em] text-gray-500">FR • ES • EN</span>
+                    </div>
+
+                    <div class="text-center">
+                        <span class="block text-2xl font-bold gold-gradient">VIP</span>
+                        <span class="text-[8px] uppercase tracking-[0.3em] text-gray-500">Ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION VISUAL PRESENCE (PILLIERS) -->
+<section id="presence" class="py-20 relative">
+    <div class="pillars-mobile-wrapper px-4">
+        
+        <!-- PILLIER 1 : THE SUIT -->
+        <div class="pillar-item">
+            <div class="pillar-card sapphire-card">
+                <div class="corner-detail top-8 left-8 border-t-2 border-l-2"></div>
+                <div class="corner-detail bottom-8 right-8 border-b-2 border-r-2"></div>
+                <img src="https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=800" class="absolute inset-0 w-full h-full object-cover">
+                <div class="card-content">
+                    <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-4 block">Executive</span>
+                    <h3 class="text-4xl lg:text-5xl font-900 text-white uppercase italic tracking-tighter mb-4">Elite Presence</h3>
+                    <p class="text-gray-300 max-w-md text-sm mb-6 italic">Refined presence tailored for luxury venues and elite guest standards</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PILLIER 2 : THE SERVICE (DIAPORAMA) -->
+        <!-- PILLIER 2 : NIGHTLIFE (DIAPORAMA FONDUE) -->
+        <div class="pillar-item">
+            <div class="pillar-card sapphire-card">
+                <div class="corner-detail top-8 left-8 border-t-2 border-l-2"></div>
+                <div class="corner-detail bottom-8 right-8 border-b-2 border-r-2"></div>
+                
+                <div class="pillar-slideshow" id="bar-slideshow">
+                    <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeifsu3wve4xbyvqyt6gmk6p3xhx3jexhvonzyq23dvwpdgr5tkjf6e" class="active-slide">
+                    <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreiabdhz46dbv6naifh3hzh5oij2lswr2l7dq5fojcu6nlzzgg3j5ce">
+                    <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeiesr63sjwsqk5d5hatoznskn6h36c5ebluqzec7opbpgue2cvyvq4">
+                </div>
+
+                <div class="card-content">
+                    <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-4 block">Nightlife</span>
+                    <h3 class="text-4xl lg:text-5xl font-900 text-white uppercase italic tracking-tighter mb-4">Pure Energy</h3>
+                    <p class="text-gray-300 max-w-md text-sm mb-6 italic">High-volume efficiency. Expert at managing the vibe and upselling VIP tables.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PILLIER 3 : THE DISCIPLINE -->
+        <div class="pillar-item">
+            <div class="pillar-card sapphire-card">
+                <div class="corner-detail top-8 left-8 border-t-2 border-l-2"></div>
+                <div class="corner-detail bottom-8 right-8 border-b-2 border-r-2"></div>
+                <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800" class="absolute inset-0 w-full h-full object-cover">
+                <div class="card-content">
+                    <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-4 block">Medical Grade</span>
+                    <h3 class="text-4xl lg:text-5xl font-900 text-white uppercase italic tracking-tighter mb-4">Discipline</h3>
+                    <p class="text-gray-300 max-w-md text-sm mb-6 italic">100% reliability. Proven discipline and high endurance. Focused on delivering consistent excellence in fast-paced environments.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+ <!-- SKILLS SECTION -->
+    <section class="py-20 px-6 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="glass-card p-10 reveal">
+                <i data-feather="zap" class="text-[#dfb857] mb-6"></i>
+                <h3 class="text-2xl font-bold gold-gradient uppercase mb-4 italic">High-Status Aura</h3>
+                <p class="text-gray-400 leading-relaxed font-light">
+                    Experienced in handling ultra-high-net-worth individuals (UHNWI). I bring the French touch: elegance, discretion, and impeccable presentation.
+                </p>
+            </div>
+
+            <div class="glass-card p-10 reveal">
+                <i data-feather="bar-chart-2" class="text-[#dfb857] mb-6"></i>
+                <h3 class="text-2xl font-bold gold-gradient uppercase mb-4 italic">Performance Driven</h3>
+                <p class="text-gray-400 leading-relaxed font-light">
+                    Fast learner, high-volume specialist. Whether it's behind the bar or floor management, I focus on upselling and guest satisfaction.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-20 text-center relative">
+        <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto mb-10"></div>
+        <p class="text-[10px] uppercase tracking-[1em] text-gray-500 mb-6">Dubai • Abu Dhabi • Barcelona</p>
+        
+        <div class="flex flex-col items-center gap-8 mb-10">
+            <div class="flex justify-center gap-8">
+                <a href="https://wa.me/34612230618" class="text-gray-400 hover:text-[#dfb857] transition"><i data-feather="message-circle"></i></a>
+                <a href="#" class="text-gray-400 hover:text-[#dfb857] transition"><i data-feather="instagram"></i></a>
+            </div>
+            
+            <!-- Lien texte vers le CV -->
+            <a href="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeicmcnoeei4cxesnsqtfh3gx7tnwwfya3mvpm3xr2cb5naer4jwxhm" target="_blank" class="text-[10px] font-bold gold-gradient uppercase tracking-widest border-b border-[#dfb857]/30 pb-1">
+                View Formal Resume (PDF)
+            </a>
+        </div>
+        
+        <p class="text-[8px] text-gray-700 uppercase tracking-widest">© 2026 LUDOVIC STOJ | ELITE HOSPITALITY</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        feather.replace();
+
+        // 1. Gestion du Diaporama (Fondue)
+        const slides = document.querySelectorAll('#bar-slideshow img');
+        let currentSlide = 0;
+
+        if(slides.length > 0) {
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active-slide');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active-slide');
+            }, 3000);
+        }
+
+        // 2. Gestion des Apparitions et Effets Piliers
+        const masterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.target.classList.contains('reveal')) {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                }
+                if (entry.target.classList.contains('pillar-item')) {
+                    const card = entry.target.querySelector('.pillar-card');
+                    if (card) {
+                        if (entry.isIntersecting) {
+                            card.classList.remove('exit');
+                            card.classList.add('active');
+                        } else {
+                            card.classList.remove('active');
+                            card.classList.add('exit');
+                        }
+                    }
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal, .pillar-item').forEach(el => masterObserver.observe(el));
+    });
+
+
+    window.addEventListener('scroll', () => {
+    const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    const bg = document.querySelector('.global-bg');
+    // On fait varier la position de 0% (haut) à 100% (bas)
+    bg.style.backgroundPosition = `center ${scrollPercent * 100}%`;
+});
+</script>
+</body>
+</html>
