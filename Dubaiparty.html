@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <!-- Balises de miniature EN PREMIER -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://partybcn.netlify.app/">
+    <meta property="og:title" content="BCN EXCLUSIVE | Secret Guest List">
+    <meta property="og:description" content="0€ Entrance • Free Taxi • 30+ International Models. Join the elite of Barcelona.">
+    <meta property="og:image" content="https://partybcn.netlify.app/preview.jpg">
+    <meta property="og:image:secure_url" content="https://partybcn.netlify.app/preview.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCN EXCLUSIVE | Secret Guest List</title>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #000; color: #fff; overflow-x: hidden; }
+        
+        .gold-gradient { 
+            background: linear-gradient(90deg, #8a6628, #dfb857, #fff9d1, #dfb857, #8a6628); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+
+            /* AJOUTE CES DEUX LIGNES CI-DESSOUS */
+            padding-right: 0.15em;  /* Donne de l'espace pour l'inclinaison de l'italique */
+            margin-right: -0.15em;   /* Compense pour ne pas décaler le centrage */
+        }
+
+        @keyframes shine { to { background-position: 200% center; } }
+
+        .btn-vip {
+            background: linear-gradient(135deg, #d4af37 0%, #f6e27a 50%, #d4af37 100%);
+            color: #000;
+            font-weight: 900;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-vip:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(212, 175, 55, 0.7); }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+        }
+
+        .floating-wa {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .hero-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=1200');
+            background-size: cover;
+            background-position: center;
+        }
+
+
+        /* État de base sur mobile (déjà dans ton code, vérifie juste les valeurs) */
+        .pillar-card { 
+            opacity: 0; 
+            transform: scale(0.7) translateZ(-300px); 
+            transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* État quand la carte entre dans l'écran */
+        .pillar-card.active { 
+            opacity: 1; 
+            transform: scale(1.05) translateZ(0); 
+            z-index: 10;
+        }
+
+        /* État stabilisé */
+        .pillar-card.active-settled { 
+            transform: scale(1) translateZ(0); 
+        }
+
+        /* Force la couleur et gère la superposition */
+        #after-slideshow img {
+            filter: grayscale(0) brightness(1) !important; /* Force la couleur */
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            z-index: 1;
+        }
+
+        /* L'image active passe devant et devient visible */
+        #after-slideshow img.active-slide {
+            opacity: 1; 
+            z-index: 2;
+        }
+
+        /* Optionnel : assombrir un peu au survol pour le texte */
+        #after-slideshow::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+
+        body, section, .glass-card, .sapphire-card { background-color: #000 !important; }
+    .goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon, #goog-gt-tt { display: none !important; }
+    .goog-text-highlight { background: none !important; box-shadow: none !important; }
+
+
+
+/* --- RÉPARATION SECTION 2 (KINETIC HUB) --- */
+    
+    /* Version MOBILE */
+    @media (max-width: 1023px) {
+        .pillars-mobile-wrapper { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 2rem; 
+        }
+        .pillar-item { 
+            height: 85vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            perspective: 1200px; 
+            width: 100%; 
+        }
+        .pillar-card { 
+            width: 95%; 
+            height: 75vh; 
+            position: relative; 
+            border-radius: 2rem; 
+            overflow: hidden;
+            transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .card-content { 
+            padding: 2rem; 
+            position: absolute; 
+            inset: 0; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-end;
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.4) 50%, transparent 100%); 
+            z-index: 30;
+        }
+    }
+
+    /* Version DESKTOP (Ordinateur) */
+    @media (min-width: 1024px) {
+        .pillars-mobile-wrapper { 
+            display: flex; 
+            flex-direction: row; 
+            height: 700px; 
+            gap: 1.5rem; 
+            max-width: 1400px; 
+            margin: 40px auto; 
+        }
+        .pillar-item { 
+            flex: 1; 
+            height: 100%; 
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
+            position: relative; 
+        }
+        .pillar-item:hover { 
+            flex: 2.5; 
+        }
+        .pillar-card { 
+            height: 100%; 
+            width: 100%; 
+            border-radius: 2.5rem; 
+            overflow: hidden; 
+            position: relative; 
+            opacity: 1 !important; /* Force la visibilité sur desktop */
+            transform: none !important;
+        }
+        .card-content { 
+            padding: 3rem; 
+            position: absolute; 
+            inset: 0; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-end;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%); 
+            z-index: 30; 
+            opacity: 0.8; 
+            transition: 0.5s;
+        }
+        .pillar-item:hover .card-content { 
+            opacity: 1; 
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, transparent 70%); 
+        }
+    }
+
+    /* Détails visuels des cartes */
+    .pillar-card video { 
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+        transition: transform 2s ease; 
+        filter: grayscale(0.5) brightness(0.7); 
+    }
+    .pillar-item:hover video, .pillar-card.active video { 
+        transform: scale(1.1); 
+        filter: grayscale(0) brightness(0.9); 
+    }
+    
+    .corner-detail { 
+        position: absolute; 
+        width: 20px; 
+        height: 20px; 
+        border-color: rgba(212, 175, 55, 0.5); 
+        z-index: 40; 
+    }
+
+
+    /* Empêche Google de décaler le site vers le bas */
+body { top: 0 !important; }
+.skiptranslate { display: none !important; }
+body > .skiptranslate { display: none !important; }
+
+
+
+@media (min-width: 1024px) {
+    .pillar-card { opacity: 1 !important; transform: none !important; }
+}
+
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+    <!-- BANDEAU DÉFILANT URGENCE -->
+    <!-- BANDEAU DÉFILANT OR EXCLUSIF -->
+    <div class="gold-banner-bg text-black text-[10px] font-black uppercase tracking-[0.2em] py-2 overflow-hidden flex border-b border-white/10">
+        <div class="animate-marquee notranslate flex whitespace-nowrap">
+            <div class="flex-shrink-0 flex items-center">
+                <span class="mx-4">⚠️ LIMITED GUEST LIST FOR TONIGHT • BOOK NOW • ⚠️ LIMITED GUEST LIST FOR TONIGHT • BOOK NOW • </span>
+                <span class="mx-4">⚠️ LIMITED GUEST LIST FOR TONIGHT • BOOK NOW • ⚠️ LIMITED GUEST LIST FOR TONIGHT • BOOK NOW • </span>
+            </div>
+            <div class="flex-shrink-0 flex items-center">
+                <span class="mx-4">⚠️ LIMITED GUEST LIST FOR TONIGHT • BOOK NOW • ⚠️ LIMITED GUEST LIST FOR TONIGHT • BOOK NOW • </span>
+                <span class="mx-4">⚠️ LIMITED GUEST LIST FOR TONIGHT • BOOK NOW • ⚠️ LIMITED GUEST LIST FOR TONIGHT • BOOK NOW • </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero-bg min-h-[90vh] flex flex-col justify-center items-center text-center px-6">
+        <h1 class="text-5xl md:text-7xl font-900 tracking-tighter mb-4 uppercase italic">
+            Dubai <br><span class="gold-gradient">Exclusive Party</span>
+        </h1>
+        <p class="text-lg md:text-xl tracking-widest uppercase opacity-80 mb-8">Accès aux Clubs les plus exclusifs de la ville</p>
+        
+        <div class="grid grid-cols-2 gap-4 w-full max-w-md mb-10">
+            <div class="glass-card p-4">
+                <span class="block text-2xl font-bold gold-gradient italic">VIP</span>
+                <span class="text-[10px] uppercase tracking-widest text-gray-400">Entrée Guest List</span>
+            </div>
+            <div class="glass-card p-4">
+                <span class="block text-2xl font-bold gold-gradient italic">Exclusive Prices</span>
+                <span class="text-[10px] uppercase tracking-widest text-gray-400">Skip Lines</span>
+            </div>
+        </div>
+
+        <a id="wa-hero" href="https://wa.me/34602199293?text=Salut!%20Je%20veux%20profiter%20de%20la%20Guest%20List%20pour%20ce%20soir.%20On%20est%20[Nombre]%20personnes.%20Envoyez%20le%20taxi%20à%20cette%20adresse%20:%20" 
+           class="btn-vip px-10 py-5 rounded-full text-xs tracking-[0.3em] uppercase mb-4">
+            Rejoindre la Guest List
+        </a>
+        <p class="text-[9px] text-gray-500 uppercase tracking-widest italic"> Tenue correcte exigée</p>
+    </section>
+
+    <!-- LANGUAGE SWITCHER -->
+<div class="fixed top-24 right-6 z-[200]">
+    <button id="langBtn" class="bg-black/80 border border-[#d4af37]/50 p-3 rounded-full backdrop-blur-md">
+        <svg class="w-6 h-6 text-[#d4af37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+        </svg>
+    </button>
+    <div id="langMenu" class="hidden absolute right-0 mt-2 bg-black border border-[#d4af37]/30 rounded-xl overflow-hidden shadow-2xl w-32">
+        <button onclick="switchLang('en')" class="w-full px-4 py-2 text-left text-xs hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">English</button>
+        <button onclick="switchLang('fr')" class="w-full px-4 py-2 text-left text-xs hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">French</button>
+        <button onclick="switchLang('ru')" class="w-full px-4 py-2 text-left text-xs hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">Russian</button>
+        <button onclick="switchLang('ar')" class="w-full px-4 py-2 text-left text-xs hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">Arabic</button>
+        <button onclick="switchLang('es')" class="w-full px-4 py-2 text-left text-xs hover:bg-[#d4af37] hover:text-black transition">Spanish</button>
+    </div>
+</div>
+
+<!-- MOTEUR DE TRADUCTION GOOGLE (UN SEUL !) -->
+<div id="google_translate_element" style="position:fixed; top:-999px; left:-999px; visibility:hidden;"></div>
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'fr', autoDisplay: false}, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+
+<!-- SECTION 2: THE KINETIC HUB (ADAPTÉE) -->
+<!-- SECTION 2: DUBAI ELITE ACCESS -->
+<section id="experience" class="py-20 relative bg-black">
+    <div class="text-center mb-16 px-6">
+        <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-2 block">The Middle East Gold Standard</span>
+        <h2 class="text-4xl font-900 text-white uppercase italic tracking-tighter">Dubai Sovereignty</h2>
+    </div>
+
+    <div class="pillars-mobile-wrapper px-4">
+        
+        <!-- PILLIER 1 : LADIES EXCLUSIVE (Le plus rentable) -->
+        <div class="pillar-item">
+            <div class="pillar-card sapphire-card">
+                <div class="corner-detail top-6 left-6 border-t-2 border-l-2"></div>
+                <div class="corner-detail bottom-6 right-6 border-b-2 border-r-2"></div>
+                <!-- Vidéo d'ambiance luxe/skyline -->
+                <!-- Répète cette modification pour les 3 vidéos des piliers -->
+                <video autoplay loop muted playsinline class="pillar-video absolute inset-0 w-full h-full object-cover z-[-1] transition-all duration-[1.5s]">
+                    <source src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeias6c5eppyk7zocvw2ht4xajdzzctpjwcqlmf5ud6h5i2qrx2sjai" type="video/mp4">
+                </video>
+                <div class="card-content">
+                    <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-4 block">Ladies Exclusive</span>
+                    <h3 class="text-3xl lg:text-5xl font-900 text-white uppercase italic tracking-tighter mb-4">Ladies Night</h3>
+                    <p class="text-gray-300 max-w-md text-sm mb-6 italic leading-relaxed">
+                        Entrée VIP offerte et Open Bar dans les lieux les plus prisés (Sky2.0, Soho Garden, White). Accès aux tables de promoteurs d'élite.
+                    </p>
+                    <a id="wa-muses" href="https://wa.me/34602199293?text=Hi!%20I'm%20interested%20in%20the%20Ladies%20Night%20offers%20in%20Dubai." class="btn-vip px-8 py-4 rounded-full text-[10px] w-fit inline-block uppercase tracking-widest text-black font-black">
+                        Obtenir l'Accès
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PILLIER 2 : FAST TRACK / SKIP LINE -->
+        <div class="pillar-item">
+            <div class="pillar-card sapphire-card ring-2 ring-[#d4af37]/40 shadow-[0_0_50px_rgba(212,175,55,0.2)]">
+                <div class="corner-detail top-6 left-6 border-t-2 border-l-2"></div>
+                <div class="corner-detail bottom-6 right-6 border-b-2 border-r-2"></div>
+                <!-- Répète cette modification pour les 3 vidéos des piliers -->
+                <video autoplay loop muted playsinline class="pillar-video absolute inset-0 w-full h-full object-cover z-[-1] transition-all duration-[1.5s]">
+                    <source src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeievrztkb4yhcbb4tml5ehe5p54e2eypa57z3env6gxif5iuaf2u4i" type="video/mp4">
+                </video>
+                <div class="card-content">
+                    <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-4 block">Priority Protocol</span>
+                    <h3 class="text-3xl lg:text-5xl font-900 text-white uppercase italic tracking-tighter mb-4">Fast Track</h3>
+                    <p class="text-gray-300 max-w-md text-sm mb-6 italic leading-relaxed">
+                        Ne faites jamais la queue. Entrée prioritaire garantie même pour les soirées les plus demandées. Votre nom est la clé.
+                    </p>
+                    <a id="wa-taxi" href="https://wa.me/34602199293?text=Hi!%20I%20want%20Fast%20Track%20access%20for%20tonight%20in%20Dubai." class="btn-vip px-8 py-4 rounded-full text-[10px] w-fit inline-block uppercase tracking-widest text-black font-black">
+                        Skip the Line
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PILLIER 3 : TABLE BOOKINGS -->
+        <div class="pillar-item">
+            <div class="pillar-card sapphire-card">
+                <div class="corner-detail top-6 left-6 border-t-2 border-l-2"></div>
+                <div class="corner-detail bottom-6 right-6 border-b-2 border-r-2"></div>
+                <!-- Répète cette modification pour les 3 vidéos des piliers -->
+                <video autoplay loop muted playsinline class="pillar-video absolute inset-0 w-full h-full object-cover z-[-1] transition-all duration-[1.5s]">
+                    <source src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeifzj24x2e6ngfncakq4knfpabx5td3j6nnxezoqwlujw33lkh6o7m" type="video/mp4">
+                </video>
+                <div class="card-content">
+                    <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-4 block">VIP Sovereignty</span>
+                    <h3 class="text-3xl lg:text-5xl font-900 text-white uppercase italic tracking-tighter mb-4">Table Service</h3>
+                    <p class="text-gray-300 max-w-md text-sm mb-6 italic leading-relaxed">
+                        Réservations des meilleures tables (Front Stage / Burj View). Gestion des dépôts et accueil personnalisé par le management du club.
+                    </p>
+                    <a id="wa-carre" href="https://wa.me/34602199293?text=Hi!%20I%20want%20to%20book%20a%20VIP%20table%20in%20Dubai." class="btn-vip px-8 py-4 rounded-full text-[10px] w-fit inline-block uppercase tracking-widest text-black font-black">
+                        Réserver une Table
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 3: PRIVATE AFTERMATH -->
+<!-- SECTION 3: DUBAI NIGHTLIFE CONCIERGE -->
+<!-- SECTION 3: VIP HOSTING & LIFESTYLE -->
+<!-- SECTION 3: THE DUBAI SELECTION (PRIZED ACCESS) -->
+<section id="dubai-clubs" class="py-24 bg-black border-y border-white/5">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <!-- HEADER PERCUTANT -->
+        <div class="text-center mb-20">
+            <h2 class="text-3xl md:text-5xl font-900 uppercase italic tracking-tighter mb-4">
+                L'accès aux lieux <span class="gold-gradient">inabordables</span>
+            </h2>
+            <p class="text-gray-400 text-sm md:text-lg uppercase tracking-widest italic mx-auto max-w-3xl">
+                Oubliez les files d'attente de touristes. Nous vous ouvrons les portes des établissements les plus sélectifs des Émirats, normalement réservés aux résidents VIP.
+            </p>
+        </div>
+
+        <!-- GRILLE DES CLUBS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- CLUB 1 -->
+            <div class="glass-card group overflow-hidden">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=800" class="w-full h-full object-cover transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                    <div class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#d4af37]/30">
+                        <span class="gold-gradient text-[8px] font-black uppercase tracking-widest">DIFC District</span>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-white mb-2 uppercase italic">Sky 2.0</h3>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-6">Techno & House • High Status</p>
+                    <ul class="text-[11px] text-gray-400 space-y-2 mb-8 italic">
+                        <li>• Entrée Prioritaire via Guest List</li>
+                        <li>• Placement Table Front-Stage</li>
+                        <li>• Accès VIP Lounge</li>
+                    </ul>
+                    <a id="wa-club-1" href="#" class="btn-vip w-full py-4 text-center block text-[10px] font-black tracking-widest">GUEST LIST SKY 2.0</a>
+                </div>
+            </div>
+
+            <!-- CLUB 2 -->
+            <div class="glass-card group overflow-hidden border-[#d4af37]/50 ring-1 ring-[#d4af37]/20">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800" class="w-full h-full object-cover transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                    <div class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#d4af37]/30">
+                        <span class="gold-gradient text-[8px] font-black uppercase tracking-widest">Meydan Dubai</span>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-white mb-2 uppercase italic">Soho Garden</h3>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-6">Elite Mixology • International DJs</p>
+                    <ul class="text-[11px] text-gray-400 space-y-2 mb-8 italic">
+                        <li>• Fast Track Entry (No Line)</li>
+                        <li>• Conciergerie Bouteilles VIP</li>
+                        <li>• Ladies Night Access</li>
+                    </ul>
+                    <a id="wa-club-2" href="#" class="btn-vip w-full py-4 text-center block text-[10px] font-black tracking-widest">GUEST LIST SOHO</a>
+                </div>
+            </div>
+
+            <!-- CLUB 3 -->
+            <div class="glass-card group overflow-hidden">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1531050171669-70c4838e5e55?auto=format&fit=crop&w=800" class="w-full h-full object-cover transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                    <div class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#d4af37]/30">
+                        <span class="gold-gradient text-[8px] font-black uppercase tracking-widest">Palm Jumeirah</span>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-white mb-2 uppercase italic">Surf Club</h3>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-6">Beach Elite • Sunset Rituals</p>
+                    <ul class="text-[11px] text-gray-400 space-y-2 mb-8 italic">
+                        <li>• Réservation Lit de Plage VIP</li>
+                        <li>• Accès Backstage DJ</li>
+                        <li>• Private Boat Arrival</li>
+                    </ul>
+                    <a id="wa-club-3" href="#" class="btn-vip w-full py-4 text-center block text-[10px] font-black tracking-widest">GUEST LIST SURF CLUB</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+    <!-- SECTION QR CODE POUR PARTAGE -->
+    <section class="py-20 bg-black text-center px-6">
+        <div class="glass-card max-w-sm mx-auto p-8 border-[#d4af37]">
+            <h3 class="gold-gradient font-bold mb-4 uppercase tracking-widest text-sm">Partager l'accès</h3>
+            <div class="bg-white p-2 inline-block rounded-xl mb-4">
+                <!-- Ici tu peux mettre l'image de ton QR code généré -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://partybcn.netlify.app/" alt="QR Code" id="qr-image">
+            </div>
+            <p class="text-[10px] text-gray-400 uppercase leading-relaxed">Fais scanner ce code à tes potes pour qu'ils profitent aussi de la Guest List & du Taxi gratuit.</p>
+        </div>
+    </section>
+
+    <!-- HORAIRES -->
+    <footer class="py-10 text-center opacity-60">
+    <div class="mb-6">
+        <a href="https://www.instagram.com/after_partybcn?igsh=MXE5M2FtdWZlYXBmZg==" target="_blank" class="inline-block">
+            <span class="gold-gradient text-[10px] font-bold uppercase tracking-[0.3em] border border-[#d4af37]/30 px-4 py-2 rounded-full">
+                Follow @after_partybcn
+            </span>
+        </a>
+    </div>
+    <p class="text-xs tracking-widest uppercase mb-2">Ouvert tous les soirs</p>
+    <p class="text-lg font-bold">22h30 — 05h00</p>
+    <p class="mt-8 text-[9px] tracking-[0.5em] text-[#d4af37]">BARCELONA • ELITE CIRCLE</p>
+</footer>
+
+    <!-- BOUTON WHATSAPP FLOTTANT -->
+    <a id="wa-float" href="https://wa.me/34602199293?text=Salut!%20Je%20veux%20profiter%20de%20la%20Guest%20List%20pour%20ce%20soir.%20On%20est%20[Nombre]%20personnes.%20Envoyez%20le%20taxi%20à%20cette%20adresse%20:%20" 
+       class="floating-wa bg-green-600 p-4 rounded-full shadow-2xl">
+        <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+    </a>
+
+    <style>
+        /* FOND DE BANDEAU EFFET OR VIF ANIMÉ */
+        .gold-banner-bg {
+            background: linear-gradient(90deg, #8a6628, #dfb857, #fff9d1, #dfb857, #8a6628);
+            background-size: 200% auto;
+            animation: shine 3s linear infinite; /* Utilise la même animation que tes titres */
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* On s'assure que l'animation marquee est toujours là et fluide */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 20s linear infinite;
+        }
+    </style>
+
+
+<script>
+    // 1. FORCE L'ANGLAIS ET AFFILIATION
+    if (!window.location.hash || window.location.hash !== '#googtrans(fr|en)') {
+        window.location.hash = '#googtrans(fr|en)';
+    }
+    document.cookie = "googtrans=/fr/en; path=/";
+    document.cookie = "googtrans=/fr/en; domain=" + window.location.hostname + "; path=/";
+
+    const urlParams = new URLSearchParams(window.location.search);
+    let promoter = urlParams.get('ref') || localStorage.getItem('promoter_id') || 'Direct';
+    if (urlParams.get('ref')) localStorage.setItem('promoter_id', promoter);
+
+    // 2. MESSAGES WHATSAPP COMPLETS (Toutes tes langues conservées)
+    const waMessages = {
+        fr: {
+            hero: "Salut! Je veux profiter de la Guest List Dubaï pour ce soir.",
+            muses: "Salut! Je suis intéressée par les offres Ladies Night à Dubaï.",
+            taxi: "Salut! Je veux un accès Fast Track pour ce soir à Dubaï.",
+            carre: "Salut! Je veux réserver une table VIP à Dubaï.",
+            sky: "Salut! Je veux être sur la Guest List pour SKY 2.0 Dubaï.",
+            soho: "Salut! Je veux un accès pour SOHO GARDEN.",
+            surf: "Salut! Je veux réserver au SURF CLUB Dubaï.",
+            float: "Salut! Je veux un accès VIP pour ce soir à Dubaï."
+        },
+        en: {
+            hero: "Hi! I want to join the Dubai Guest List for tonight.",
+            muses: "Hi! I'm interested in the Ladies Night offers in Dubai.",
+            taxi: "Hi! I want Fast Track access for tonight in Dubai.",
+            carre: "Hi! I want to book a VIP table in Dubai.",
+            sky: "Hi! Put me on the Guest List for SKY 2.0 Dubai.",
+            soho: "Hi! I need access for SOHO GARDEN.",
+            surf: "Hi! I want to book at SURF CLUB Dubai.",
+            float: "Hi! I need VIP access for tonight in Dubai."
+        },
+        es: {
+            hero: "¡Hola! Quiero unirme a la Guest List de Dubái para esta noche.",
+            muses: "¡Hola! Estoy interesada en las ofertas de Ladies Night en Dubái.",
+            taxi: "¡Hola! Necesito un pase Fast Track para esta noche en Dubái.",
+            carre: "¡Hola! Quiero reservar una mesa VIP en Dubái.",
+            sky: "¡Hola! Quiero estar en la Guest List de SKY 2.0 Dubái.",
+            soho: "¡Hola! Necesito acceso para SOHO GARDEN.",
+            surf: "¡Hola! Quiero reservar en SURF CLUB Dubái.",
+            float: "¡Hola! Necesito acceso VIP para esta noche en Dubái."
+        },
+        ru: {
+            hero: "Привет! Я хочу записаться в Guest List в Дубае на сегодня.",
+            muses: "Привет! Меня интересуют предложения Ladies Night в Дубае.",
+            taxi: "Привет! Мне нужен Fast Track на сегодня в Дубае.",
+            carre: "Привет! Я хочу забронировать VIP-столик в Дубае.",
+            sky: "Привет! Запиши меня в Guest List в SKY 2.0 Дубай.",
+            soho: "Привет! Мне нужен доступ в SOHO GARDEN.",
+            surf: "Привет! Я хочу забронировать столик в SURF CLUB Дубай.",
+            float: "Привет! Мне нужен VIP-доступ на сегодня в Дубае."
+        },
+        ar: {
+            hero: "مرحبًا! أريد الانضمام إلى قائمة الضيوف في دبي الليلة.",
+            muses: "مرحبًا! أنا مهتمة بعروض Ladies Night في دبي.",
+            taxi: "مرحبًا! أحتاج إلى دخول سريع الليلة في دبي.",
+            carre: "مرحبًا! أريد حجز طاولة VIP في دبي.",
+            sky: "مرحبًا! أريد التسجيل في قائمة ضيوف SKY 2.0 دبي.",
+            soho: "مرحبًا! أحتاج إلى دخول لنادي SOHO GARDEN.",
+            surf: "مرحبًا! أريد الحجز في SURF CLUB دبي.",
+            float: "مرحبًا! أحتاج إلى دخول VIP الليلة في دبي."
+        }
+    };
+
+    // 3. FONCTION DE TRADUCTION + WHATSAPP DYNAMIQUE
+    function switchLang(langCode) {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) { select.value = langCode; select.dispatchEvent(new Event('change')); }
+
+        const num = "34602199293"; 
+        const msg = waMessages[langCode] || waMessages['en'];
+        const refTag = ` [Ref: ${promoter}]`; 
+        
+        const links = { 
+            'wa-hero': msg.hero, 
+            'wa-muses': msg.muses, 
+            'wa-taxi': msg.taxi, 
+            'wa-carre': msg.carre,
+            'wa-club-1': msg.sky, 
+            'wa-club-2': msg.soho, 
+            'wa-club-3': msg.surf, 
+            'wa-float': msg.float 
+        };
+        
+        for (let id in links) {
+            const el = document.getElementById(id);
+            if(el) el.href = `https://wa.me/${num}?text=${encodeURIComponent(links[id] + refTag)}`;
+        }
+        document.getElementById('langMenu').classList.add('hidden');
+    }
+
+    // 4. INITIALISATION, VIDEOS ET SON
+    document.addEventListener('DOMContentLoaded', () => {
+        // QR Code setup
+        const qrImg = document.getElementById('qr-image');
+        if (qrImg) {
+            const shareUrl = window.location.href.split('#')[0].split('?')[0] + `?ref=${promoter}`;
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(shareUrl)}`;
+        }
+
+        const allVideos = document.querySelectorAll('.pillar-video');
+
+        // Gérer le son sans couper la lecture
+        const manageVideoSound = (activeVideo) => {
+            allVideos.forEach(v => { v.muted = true; });
+            if (activeVideo) {
+                activeVideo.muted = false;
+                activeVideo.play().catch(() => {});
+            }
+        };
+
+        // OBSERVATEUR MOBILE (Vidéo centrale = Son actif)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const card = entry.target.querySelector('.pillar-card');
+                const video = entry.target.querySelector('.pillar-video');
+                
+                if (entry.isIntersecting) {
+                    if (card) {
+                        card.classList.add('active');
+                        setTimeout(() => card.classList.add('active-settled'), 900);
+                    }
+                    if (window.innerWidth < 1024) manageVideoSound(video);
+                } else {
+                    if (card) card.classList.remove('active', 'active-settled');
+                }
+            });
+        }, { threshold: 0.6 });
+
+        document.querySelectorAll('.pillar-item').forEach(item => {
+            observer.observe(item);
+            // GESTION PC (Survol = Son actif)
+            if (window.innerWidth >= 1024) {
+                item.addEventListener('mouseenter', () => manageVideoSound(item.querySelector('.pillar-video')));
+                item.addEventListener('mouseleave', () => manageVideoSound(null));
+            }
+        });
+
+        // SON + PLEIN ÉCRAN AU CLIC
+        allVideos.forEach(video => {
+            video.addEventListener('click', function() {
+                this.muted = !this.muted;
+                if (!this.muted && this.requestFullscreen) this.requestFullscreen();
+            });
+        });
+
+        // Langue par défaut (Anglais)
+        setTimeout(() => { if (document.querySelector('.goog-te-combo')) switchLang('en'); }, 1000);
+    });
+
+    // Menu Planète
+    document.getElementById('langBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.getElementById('langMenu').classList.toggle('hidden');
+    });
+    document.addEventListener('click', () => document.getElementById('langMenu').classList.add('hidden'));
+
+    // Fix Scroll Google
+    setInterval(() => {
+        document.body.style.top = "0px";
+        document.body.style.position = "static";
+    }, 1000);
+</script>
+
+    
+</body>
+</html>
