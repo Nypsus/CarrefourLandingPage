@@ -99,13 +99,20 @@
     pointer-events: none; /* Permet de cliquer à travers le dégradé */
 }
 
-        /* Correction Mobile : on garde le fondu mais on enlève le 'fixed' qui fait bugger l'image sur iPhone */
-        @media (max-width: 1024px) {
-            .hero-bg {
-                background-attachment: scroll;
-                min-height: 90vh; /* Un peu plus court sur mobile */
-            }
-        }
+        /* --- VERSION MOBILE (Ajustement du cadrage) --- */
+@media (max-width: 768px) {
+    .hero-bg {
+        background-attachment: scroll; /* Obligatoire sur iOS */
+        min-height: 85vh;
+        
+        /* OPTION A : Utiliser une image différente pour mobile (CONSEILLÉ) */
+        background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                          url('https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeiejavln5uuzjccl2nyxthcrkpizf7yjirlg6bigqqbw4qhl73dmzu');
+
+        /* OPTION B : Si tu gardes la même image, décale le focus */
+        /* background-position: 75% center; */ /* 75% horizontal permet de voir la droite de l'image (souvent là où est le Burj Khalifa) */
+    }
+}
 
 
         /* État de base sur mobile (déjà dans ton code, vérifie juste les valeurs) */
