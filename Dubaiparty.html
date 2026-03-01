@@ -730,17 +730,33 @@ body > .skiptranslate { display: none !important; }
                 }, index * 1500); // Décale le club 1 (0s), le club 2 (1.5s), le club 3 (3s)
             }
         });
-        const allVideos = document.querySelectorAll('.pillar-video');
+        
+            // 1. Force le lancement de toutes les vidéos (MUET) pour éviter le freeze
+            allVideos.forEach(v => {
+                v.muted = true;
+                v.play().catch(() => {}); 
+            });
 
-        // Force la lecture immédiate en muet pour éviter le freeze
-        allVideos.forEach(v => { v.muted = true; v.play().catch(() => {}); });
-
-        // FONCTION SON (SANS PAUSE)
+            // 2. DÉBLOQUE L'AUDIO au premier contact (scroll ou clic)
+            const unlock = () => {
+                allVideos.forEach(v => {
+                    v.play().catch(() => {}); // Re-valide la lecture pour le navigateur
+                });
+                window.removeEventListener('touchstart', unlock);
+                window.removeEventListener('mousedown', unlock);
+            };
+            window.addEventListener('touchstart', unlock, { passive: true });
+            window.addEventListener('mousedown', unlock);
+        
+        
+            // FONCTION SON (SANS PAUSE)
         const manageVideoSound = (activeVideo) => {
-            allVideos.forEach(v => { v.muted = true; });
+            allVideos.forEach(v => {
+                v.muted = true; // On coupe le son de tout le monde sans arrêter l'image
+            });
             if (activeVideo) {
-                activeVideo.muted = false;
-                activeVideo.play().catch(() => {});
+                activeVideo.muted = false; // On libère le son de la vidéo active
+                activeVideo.play().catch(() => {}); // Sécurité
             }
         };
 
@@ -752,19 +768,26 @@ body > .skiptranslate { display: none !important; }
             qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(finalShareUrl)}`;
         }
 
-        // OBSERVATEUR MOBILE (SCROLL)
+        // --- OBSERVATEUR MOBILE (SCROLL) ---
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const video = entry.target.querySelector('.pillar-video');
                 const card = entry.target.querySelector('.pillar-card');
+                
                 if (entry.isIntersecting) {
-                    if (card) { card.classList.add('active'); setTimeout(() => card.classList.add('active-settled'), 900); }
-                    if (window.innerWidth < 1024) manageVideoSound(video);
+                    if (card) {
+                        card.classList.add('active');
+                        setTimeout(() => card.classList.add('active-settled'), 900);
+                    }
+                    // Sur mobile : Unmute la vidéo centrale
+                    if (window.innerWidth < 1024 && video) {
+                        manageVideoSound(video);
+                    }
                 } else {
                     if (card) card.classList.remove('active', 'active-settled');
                 }
             });
-        }, { threshold: 0.6 });
+        }, { threshold: 0.6 }); // Déclenche quand 60% de la carte est visible
 
         // --- OBSERVATEUR CLUBS MOBILE (Coloration au scroll) ---
         const clubCards = document.querySelectorAll('#dubai-clubs .glass-card');
