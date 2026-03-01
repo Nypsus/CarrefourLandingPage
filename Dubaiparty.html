@@ -310,6 +310,24 @@ body > .skiptranslate { display: none !important; }
 .glass-card:hover .slideshow-container img {
     filter: grayscale(0);
 }
+
+
+
+
+/* --- COLORATION AUTO MOBILE --- */
+@media (max-width: 1024px) {
+    /* État par défaut : Gris */
+    #dubai-clubs .glass-card img {
+        filter: grayscale(1) !important;
+        transition: filter 0.8s ease-in-out;
+    }
+    /* État actif quand au centre : Couleur */
+    #dubai-clubs .glass-card.active-mobile img {
+        filter: grayscale(0) !important;
+    }
+}
+
+
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -747,6 +765,24 @@ body > .skiptranslate { display: none !important; }
                 }
             });
         }, { threshold: 0.6 });
+
+        // --- OBSERVATEUR CLUBS MOBILE (Coloration au scroll) ---
+        const clubCards = document.querySelectorAll('#dubai-clubs .glass-card');
+        const clubObserver = new IntersectionObserver((entries) => {
+            if (window.innerWidth < 1024) { // Uniquement sur Mobile/Tablette
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active-mobile');
+                    } else {
+                        entry.target.classList.remove('active-mobile');
+                    }
+                });
+            }
+        }, { 
+            threshold: 0.6 // Se déclenche quand 60% de la carte est visible (bien au centre)
+        });
+
+        clubCards.forEach(card => clubObserver.observe(card));
 
         // GESTION PC (SURVOL) & Lancement Observer
         document.querySelectorAll('.pillar-item').forEach(item => {
