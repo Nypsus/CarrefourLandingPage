@@ -752,10 +752,12 @@ body > .skiptranslate { display: none !important; }
 
         // FONCTION GESTION SON (SANS PAUSE)
         const manageVideoSound = (activeVideo) => {
-            allVideos.forEach(v => { v.muted = true; });
+            allVideos.forEach(v => { 
+                v.muted = true; // On met tout le monde en sourdine
+            });
             if (activeVideo) {
-                activeVideo.currentTime = 0; // RECOUPER ET REPARTIR DU DÉBUT
-                activeVideo.muted = false;
+                activeVideo.currentTime = 0; // Repart du début
+                activeVideo.muted = false;   // On active le son de la nouvelle
                 activeVideo.play().catch(() => {});
             }
         };
@@ -772,18 +774,27 @@ body > .skiptranslate { display: none !important; }
             entries.forEach(entry => {
                 const video = entry.target.querySelector('.pillar-video');
                 const card = entry.target.querySelector('.pillar-card');
+                
                 if (entry.isIntersecting) {
-                    if (card) { card.classList.add('active'); setTimeout(() => card.classList.add('active-settled'), 900); }
+                    // Quand la vidéo arrive au centre
+                    if (card) { 
+                        card.classList.add('active'); 
+                        setTimeout(() => card.classList.add('active-settled'), 900); 
+                    }
                     
-                    // --- MODIF ICI : REPART AU DÉBUT + SON SUR MOBILE ---
                     if (window.innerWidth < 1024 && video) {
-                        video.currentTime = 0; 
-                        manageVideoSound(video);
+                        // On ne relance le son/restart que si elle n'est pas DEJÀ la vidéo active
+                        if (video.muted) { 
+                            manageVideoSound(video); 
+                        }
                     }
                 } else {
+                    // On retire l'animation visuelle
                     if (card) card.classList.remove('active', 'active-settled');
-                    // Remet en muet quand la vidéo sort de l'écran
-                    if (window.innerWidth < 1024 && video) { video.muted = true; }
+                    
+                    // --- ON NE MET PLUS video.muted = true ICI ---
+                    // Comme ça, le son continue de jouer même si la carte sort de l'écran
+                    // Il ne s'arrêtera que lorsque l'autre vidéo sera "Intersecting" (au centre)
                 }
             });
         }, { threshold: 0.6 });
