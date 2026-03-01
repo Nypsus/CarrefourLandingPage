@@ -2,12 +2,17 @@
 <html lang="fr">
 <head>
     <!-- Balises de miniature (MAJ DUBAI EXCLUSIVE) -->
+<!-- Balises de miniature (FIX WHATSAPP) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://sl-excellence.com/dubaiparty">
 <meta property="og:title" content="DUBAI EXCLUSIVE | VIP Guest List">
-<meta property="og:description" content="NAMMOS • NIKKI BEACH • SKY 2.0. Join the elite of Dubai. Fast Track & VIP Table Booking.">
-<meta property="og:image" content="https://sl-excellence.com/preview.jpg">
-<meta property="og:image:secure_url" content="https://sl-excellence.com/preview.jpg">
+<meta property="og:description" content="NAMMOS • NIKKI BEACH • SKY 2.0. Join the elite of Dubai.">
+
+<!-- Image pour WhatsApp et serveurs exigeants -->
+<meta property="og:image" content="https://sl-excellence.com/preview.jpg?v=1.1">
+<meta property="og:image:secure_url" content="https://sl-excellence.com/preview.jpg?v=1.1">
+<meta itemprop="image" content="https://sl-excellence.com/preview.jpg?v=1.1">
+
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -363,18 +368,27 @@ body > .skiptranslate { display: none !important; }
     </section>
 
     <!-- LANGUAGE SWITCHER -->
-<div class="fixed top-24 right-6 z-[200]">
-    <button id="langBtn" class="bg-black/80 border border-[#d4af37]/50 p-3 rounded-full backdrop-blur-md">
-        <svg class="w-6 h-6 text-[#d4af37]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
-        </svg>
-    </button>
-    <div id="langMenu" class="hidden absolute right-0 mt-2 bg-black border border-[#d4af37]/30 rounded-xl overflow-hidden shadow-2xl w-32">
-        <button onclick="switchLang('en')" class="w-full px-4 py-2 text-left text-xs hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">English</button>
-        <button onclick="switchLang('fr')" class="w-full px-4 py-2 text-left text-xs hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">French</button>
-        <button onclick="switchLang('ru')" class="w-full px-4 py-2 text-left text-xs hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">Russian</button>
-        <button onclick="switchLang('ar')" class="w-full px-4 py-2 text-left text-xs hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">Arabic</button>
-        <button onclick="switchLang('es')" class="w-full px-4 py-2 text-left text-xs hover:bg-[#d4af37] hover:text-black transition">Spanish</button>
+<!-- LANGUAGE SWITCHER ALIGNÉ -->
+<div class="fixed top-9 right-6 z-[200]">
+    <div class="relative group">
+        <button id="langBtn" class="relative inline-flex items-center justify-center w-12 h-12 overflow-hidden font-bold rounded-full border border-[#d4af37]/30 bg-black/50 backdrop-blur-md transition-all duration-300">
+            <!-- Fond Or qui remplit tout au survol -->
+            <span class="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-r from-[#8a6628] via-[#fff9d1] to-[#8a6628] group-hover:opacity-100"></span>
+            
+            <!-- Icône Planète -->
+            <svg class="relative w-6 h-6 text-[#d4af37] group-hover:text-black transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+            </svg>
+        </button>
+        
+        <!-- Menu déroulant -->
+        <div id="langMenu" class="hidden absolute right-0 mt-2 bg-black/90 border border-[#d4af37]/30 rounded-xl overflow-hidden shadow-2xl w-32 backdrop-blur-lg">
+            <button onclick="switchLang('en')" class="w-full px-4 py-2 text-left text-xs text-white hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">English</button>
+            <button onclick="switchLang('fr')" class="w-full px-4 py-2 text-left text-xs text-white hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">French</button>
+            <button onclick="switchLang('ru')" class="w-full px-4 py-2 text-left text-xs text-white hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">Russian</button>
+            <button onclick="switchLang('ar')" class="w-full px-4 py-2 text-left text-xs text-white hover:bg-[#d4af37] hover:text-black transition border-b border-white/5">Arabic</button>
+            <button onclick="switchLang('es')" class="w-full px-4 py-2 text-left text-xs text-white hover:bg-[#d4af37] hover:text-black transition">Spanish</button>
+        </div>
     </div>
 </div>
 
