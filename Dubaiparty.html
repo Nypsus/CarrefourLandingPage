@@ -6,7 +6,7 @@
     <meta property="og:url" content="https://partybcn.netlify.app/">
     <meta property="og:title" content="BCN EXCLUSIVE | Secret Guest List">
     <meta property="og:description" content="0€ Entrance • Free Taxi • 30+ International Models. Join the elite of Barcelona.">
-    <meta property="og:image" content="https://partybcn.netlify.app/preview.jpg">
+    <meta property="og:image" content="https://dubaiparty.netlify.app/preview.jpg">
     <meta property="og:image:secure_url" content="https://partybcn.netlify.app/preview.jpg">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
@@ -63,10 +63,48 @@
             100% { transform: scale(1); }
         }
 
+       
+
         .hero-bg {
-            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=1200');
-            background-size: cover;
-            background-position: center;
+    position: relative;
+    height: 100vh; /* Force l'image sur tout l'écran */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* On garde juste un voile sombre léger et uniforme sur l'image */
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                      url('https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeigttl7f5goubf6gmdqanjie3wechokifdxxi7euc3z4lvljbjpcmu');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* On s'assure que le texte et les boutons passent au-dessus du fondu */
+.hero-bg > * {
+    position: relative;
+    z-index: 10;
+}
+
+.hero-bg::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%; /* Le fondu commence à 60% de la hauteur de l'image */
+    background: linear-gradient(to bottom, transparent, #000);
+    z-index: 1;
+    pointer-events: none; /* Permet de cliquer à travers le dégradé */
+}
+
+        /* Correction Mobile : on garde le fondu mais on enlève le 'fixed' qui fait bugger l'image sur iPhone */
+        @media (max-width: 1024px) {
+            .hero-bg {
+                background-attachment: scroll;
+                min-height: 90vh; /* Un peu plus court sur mobile */
+            }
         }
 
 
@@ -236,6 +274,30 @@ body > .skiptranslate { display: none !important; }
     .pillar-card { opacity: 1 !important; transform: none !important; }
 }
 
+
+
+
+
+/* --- FIX SLIDESHOW ASYNCHRONE --- */
+.slideshow-container { 
+    position: relative; 
+    background: #000;
+}
+.slideshow-container img {
+    position: absolute !important;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out !important;
+    z-index: 1;
+    filter: grayscale(1);
+}
+.slideshow-container img.active-slide {
+    opacity: 1 !important;
+    z-index: 2 !important;
+}
+.glass-card:hover .slideshow-container img {
+    filter: grayscale(0);
+}
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -254,6 +316,18 @@ body > .skiptranslate { display: none !important; }
                 <span class="mx-4">⚠️ LIMITED GUEST LIST FOR TONIGHT • BOOK NOW • ⚠️ LIMITED GUEST LIST FOR TONIGHT • BOOK NOW • </span>
             </div>
         </div>
+    </div>
+
+    <div class="fixed top-9 left-6 z-[200]">
+        <a href="https://slsexcellence.com/nightlife" class="group relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold rounded-full border border-[#d4af37]/30 bg-black/50 backdrop-blur-md transition-all duration-300">
+            <!-- Fond Or qui remplit tout au survol -->
+            <span class="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-r from-[#8a6628] via-[#fff9d1] to-[#8a6628] group-hover:opacity-100"></span>
+            
+            <!-- Texte -->
+            <span class="relative text-[#d4af37] group-hover:text-black text-[9px] font-black uppercase tracking-[0.2em] transition-colors duration-300">
+                NightLife Portal
+            </span>
+        </a>
     </div>
 
     <!-- HERO SECTION -->
@@ -308,8 +382,6 @@ body > .skiptranslate { display: none !important; }
 
 
 
-<!-- SECTION 2: THE KINETIC HUB (ADAPTÉE) -->
-<!-- SECTION 2: DUBAI ELITE ACCESS -->
 <section id="experience" class="py-20 relative bg-black">
     <div class="text-center mb-16 px-6">
         <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-2 block">The Middle East Gold Standard</span>
@@ -317,70 +389,45 @@ body > .skiptranslate { display: none !important; }
     </div>
 
     <div class="pillars-mobile-wrapper px-4">
-        
-        <!-- PILLIER 1 : LADIES EXCLUSIVE (Le plus rentable) -->
+        <!-- PILLIER 1 -->
         <div class="pillar-item">
             <div class="pillar-card sapphire-card">
                 <div class="corner-detail top-6 left-6 border-t-2 border-l-2"></div>
                 <div class="corner-detail bottom-6 right-6 border-b-2 border-r-2"></div>
-                <!-- Vidéo d'ambiance luxe/skyline -->
-                <!-- Répète cette modification pour les 3 vidéos des piliers -->
-                <video autoplay loop muted playsinline class="pillar-video absolute inset-0 w-full h-full object-cover z-[-1] transition-all duration-[1.5s]">
-                    <source src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeias6c5eppyk7zocvw2ht4xajdzzctpjwcqlmf5ud6h5i2qrx2sjai" type="video/mp4">
-                </video>
+                <video autoplay loop muted playsinline src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeid7esjguq25ofvva2uke5ordbr7zevd73njtzw4oeukxkpbu2xjke" class="pillar-video absolute inset-0 w-full h-full object-cover z-[-1] transition-all duration-[1.5s]"></video>
                 <div class="card-content">
-                    <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-4 block">Ladies Exclusive</span>
-                    <h3 class="text-3xl lg:text-5xl font-900 text-white uppercase italic tracking-tighter mb-4">Ladies Night</h3>
-                    <p class="text-gray-300 max-w-md text-sm mb-6 italic leading-relaxed">
-                        Entrée VIP offerte et Open Bar dans les lieux les plus prisés (Sky2.0, Soho Garden, White). Accès aux tables de promoteurs d'élite.
-                    </p>
-                    <a id="wa-muses" href="https://wa.me/34602199293?text=Hi!%20I'm%20interested%20in%20the%20Ladies%20Night%20offers%20in%20Dubai." class="btn-vip px-8 py-4 rounded-full text-[10px] w-fit inline-block uppercase tracking-widest text-black font-black">
-                        Obtenir l'Accès
-                    </a>
+                    <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-4 block">Exclusive Selection</span>
+                    <h3 class="text-3xl lg:text-5xl font-900 text-white uppercase italic tracking-tighter mb-4">Muse Selection</h3>
+                    <p class="text-gray-300 max-w-md text-sm mb-6 italic leading-relaxed">Entrée VIP garantie & Open Bar dans les lieux les plus prestigieux de Dubaï. Accès aux meilleures tables.</p>
+                    <a id="wa-muses" href="#" class="btn-vip px-8 py-4 rounded-full text-[10px] w-fit inline-block uppercase tracking-widest text-black font-black">Obtenir l'Accès</a>
                 </div>
             </div>
         </div>
-
-        <!-- PILLIER 2 : FAST TRACK / SKIP LINE -->
+        <!-- PILLIER 2 -->
         <div class="pillar-item">
-            <div class="pillar-card sapphire-card ring-2 ring-[#d4af37]/40 shadow-[0_0_50px_rgba(212,175,55,0.2)]">
+            <div class="pillar-card sapphire-card ring-2 ring-[#d4af37]/40">
                 <div class="corner-detail top-6 left-6 border-t-2 border-l-2"></div>
                 <div class="corner-detail bottom-6 right-6 border-b-2 border-r-2"></div>
-                <!-- Répète cette modification pour les 3 vidéos des piliers -->
-                <video autoplay loop muted playsinline class="pillar-video absolute inset-0 w-full h-full object-cover z-[-1] transition-all duration-[1.5s]">
-                    <source src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeievrztkb4yhcbb4tml5ehe5p54e2eypa57z3env6gxif5iuaf2u4i" type="video/mp4">
-                </video>
+                <video autoplay loop muted playsinline src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeievrztkb4yhcbb4tml5ehe5p54e2eypa57z3env6gxif5iuaf2u4i" class="pillar-video absolute inset-0 w-full h-full object-cover z-[-1] transition-all duration-[1.5s]"></video>
                 <div class="card-content">
                     <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-4 block">Priority Protocol</span>
                     <h3 class="text-3xl lg:text-5xl font-900 text-white uppercase italic tracking-tighter mb-4">Fast Track</h3>
-                    <p class="text-gray-300 max-w-md text-sm mb-6 italic leading-relaxed">
-                        Ne faites jamais la queue. Entrée prioritaire garantie même pour les soirées les plus demandées. Votre nom est la clé.
-                    </p>
-                    <a id="wa-taxi" href="https://wa.me/34602199293?text=Hi!%20I%20want%20Fast%20Track%20access%20for%20tonight%20in%20Dubai." class="btn-vip px-8 py-4 rounded-full text-[10px] w-fit inline-block uppercase tracking-widest text-black font-black">
-                        Skip the Line
-                    </a>
+                    <p class="text-gray-300 max-w-md text-sm mb-6 italic leading-relaxed">Ne faites jamais la queue. Entrée prioritaire garantie même pour les soirées les plus demandées. Votre nom est la clé.</p>
+                    <a id="wa-taxi" href="#" class="btn-vip px-8 py-4 rounded-full text-[10px] w-fit inline-block uppercase tracking-widest text-black font-black">Skip the Line</a>
                 </div>
             </div>
         </div>
-
-        <!-- PILLIER 3 : TABLE BOOKINGS -->
+        <!-- PILLIER 3 -->
         <div class="pillar-item">
             <div class="pillar-card sapphire-card">
                 <div class="corner-detail top-6 left-6 border-t-2 border-l-2"></div>
                 <div class="corner-detail bottom-6 right-6 border-b-2 border-r-2"></div>
-                <!-- Répète cette modification pour les 3 vidéos des piliers -->
-                <video autoplay loop muted playsinline class="pillar-video absolute inset-0 w-full h-full object-cover z-[-1] transition-all duration-[1.5s]">
-                    <source src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeifzj24x2e6ngfncakq4knfpabx5td3j6nnxezoqwlujw33lkh6o7m" type="video/mp4">
-                </video>
+                <video autoplay loop muted playsinline src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafybeifzj24x2e6ngfncakq4knfpabx5td3j6nnxezoqwlujw33lkh6o7m" class="pillar-video absolute inset-0 w-full h-full object-cover z-[-1] transition-all duration-[1.5s]"></video>
                 <div class="card-content">
                     <span class="gold-gradient font-black text-[10px] uppercase tracking-[0.5em] mb-4 block">VIP Sovereignty</span>
-                    <h3 class="text-3xl lg:text-5xl font-900 text-white uppercase italic tracking-tighter mb-4">Table Service</h3>
-                    <p class="text-gray-300 max-w-md text-sm mb-6 italic leading-relaxed">
-                        Réservations des meilleures tables (Front Stage / Burj View). Gestion des dépôts et accueil personnalisé par le management du club.
-                    </p>
-                    <a id="wa-carre" href="https://wa.me/34602199293?text=Hi!%20I%20want%20to%20book%20a%20VIP%20table%20in%20Dubai." class="btn-vip px-8 py-4 rounded-full text-[10px] w-fit inline-block uppercase tracking-widest text-black font-black">
-                        Réserver une Table
-                    </a>
+                    <h3 class="text-3xl lg:text-5xl font-900 text-white uppercase italic tracking-tighter mb-4">VIP Table Booking</h3>
+                    <p class="text-gray-300 max-w-md text-sm mb-6 italic leading-relaxed">Fast Track Entry & Prime Table Booking.</p>
+                    <a id="wa-carre" href="#" class="btn-vip px-8 py-4 rounded-full text-[10px] w-fit inline-block uppercase tracking-widest text-black font-black">Réserver une Table</a>
                 </div>
             </div>
         </div>
@@ -394,78 +441,91 @@ body > .skiptranslate { display: none !important; }
 <section id="dubai-clubs" class="py-24 bg-black border-y border-white/5">
     <div class="max-w-7xl mx-auto px-6">
         
-        <!-- HEADER PERCUTANT -->
         <div class="text-center mb-20">
             <h2 class="text-3xl md:text-5xl font-900 uppercase italic tracking-tighter mb-4">
-                L'accès aux lieux <span class="gold-gradient">inabordables</span>
+                The <span class="gold-gradient">Sovereign</span> Selection
             </h2>
             <p class="text-gray-400 text-sm md:text-lg uppercase tracking-widest italic mx-auto max-w-3xl">
-                Oubliez les files d'attente de touristes. Nous vous ouvrons les portes des établissements les plus sélectifs des Émirats, normalement réservés aux résidents VIP.
+                Oubliez les files d'attente. Nous vous ouvrons les portes des établissements les plus iconiques de Dubaï.
             </p>
         </div>
 
-        <!-- GRILLE DES CLUBS -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             
-            <!-- CLUB 1 -->
+            <!-- CLUB 1: NAMMOS (SLIDESHOW) -->
             <div class="glass-card group overflow-hidden">
-                <div class="h-64 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=800" class="w-full h-full object-cover transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#d4af37]/30">
-                        <span class="gold-gradient text-[8px] font-black uppercase tracking-widest">DIFC District</span>
+                <div class="h-64 overflow-hidden relative slideshow-container">
+                    <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreiawreryw2uugoq67n2z5paqe4jukv4oo7b3hmui7plc4xcv3lnkgy" class="w-full h-full object-cover grayscale group-hover:grayscale-0 active-slide">
+                    <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreihzfurjjmv74aieeaxebwcahbtqbqzholkyfmh33chg44mikdm4ze" class="w-full h-full object-cover grayscale group-hover:grayscale-0">
+                    <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreiedzm53kf4g7k5yaqkfv7mpc5ikksax5u5ojld5fq4mdi2jzunwuy" class="w-full h-full object-cover grayscale group-hover:grayscale-0">
+                    
+                    <div class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#d4af37]/30 z-[10]">
+                        <span class="gold-gradient text-[8px] font-black uppercase tracking-widest">Jumeirah (Four Seasons)</span>
                     </div>
                 </div>
                 <div class="p-8">
-                    <h3 class="text-2xl font-bold text-white mb-2 uppercase italic">Sky 2.0</h3>
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-6">Techno & House • High Status</p>
+                    <h3 class="text-2xl font-bold text-white mb-2 uppercase italic">Nammos Dubai</h3>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-6">Ultra-Luxe Beach Club • Elite Crowd</p>
                     <ul class="text-[11px] text-gray-400 space-y-2 mb-8 italic">
-                        <li>• Entrée Prioritaire via Guest List</li>
-                        <li>• Placement Table Front-Stage</li>
-                        <li>• Accès VIP Lounge</li>
+                        <li>• Réservation Table & Transat VIP</li>
+                        <li>• Accès Restaurant Gastronomique</li>
+                        <li>• Le spot le plus cher de Dubaï</li>
                     </ul>
-                    <a id="wa-club-1" href="#" class="btn-vip w-full py-4 text-center block text-[10px] font-black tracking-widest">GUEST LIST SKY 2.0</a>
+                    <a id="wa-club-1" href="#" class="btn-vip w-full py-4 text-center block text-[10px] font-black tracking-widest">ACCESS NAMMOS</a>
                 </div>
             </div>
 
-            <!-- CLUB 2 -->
+            <!-- CLUB 2: NIKKI BEACH (SLIDESHOW) -->
             <div class="glass-card group overflow-hidden border-[#d4af37]/50 ring-1 ring-[#d4af37]/20">
-                <div class="h-64 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800" class="w-full h-full object-cover transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#d4af37]/30">
-                        <span class="gold-gradient text-[8px] font-black uppercase tracking-widest">Meydan Dubai</span>
+                <div class="h-64 overflow-hidden relative slideshow-container">
+                    <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreifm4gssx7rjn7xl2qejt3dzfvqwiknq7gyse7nk5gsps7ytqwzzye" class="w-full h-full object-cover grayscale group-hover:grayscale-0 active-slide">
+                    <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreigdpimdriyqj7qemsprcfod322fbov2hvbdp5rlrtbxzuh5gr4vui" class="w-full h-full object-cover grayscale group-hover:grayscale-0">
+                    <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreigseug7g4mldqugibwcn5etwcjbypeeiilasulpdqayreahclqaca" class="w-full h-full object-cover grayscale group-hover:grayscale-0">
+                    
+                    <div class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#d4af37]/30 z-[10]">
+                        <span class="gold-gradient text-[8px] font-black uppercase tracking-widest">Pearl Jumeira</span>
                     </div>
                 </div>
                 <div class="p-8">
-                    <h3 class="text-2xl font-bold text-white mb-2 uppercase italic">Soho Garden</h3>
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-6">Elite Mixology • International DJs</p>
+                    <h3 class="text-2xl font-bold text-white mb-2 uppercase italic">Nikki Beach</h3>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-6">World Iconic Brand • Model Sanctuary</p>
                     <ul class="text-[11px] text-gray-400 space-y-2 mb-8 italic">
-                        <li>• Fast Track Entry (No Line)</li>
-                        <li>• Conciergerie Bouteilles VIP</li>
-                        <li>• Ladies Night Access</li>
+                        <li>• Pool Side VIP Cabanas</li>
+                        <li>• Signature White Parties</li>
+                        <li>• Ambiance Jet-Set & Musique House</li>
                     </ul>
-                    <a id="wa-club-2" href="#" class="btn-vip w-full py-4 text-center block text-[10px] font-black tracking-widest">GUEST LIST SOHO</a>
+                    <a id="wa-club-2" href="#" class="btn-vip w-full py-4 text-center block text-[10px] font-black tracking-widest">GUEST LIST NIKKI</a>
                 </div>
             </div>
 
-            <!-- CLUB 3 -->
-            <div class="glass-card group overflow-hidden">
-                <div class="h-64 overflow-hidden relative">
-                    <img src="https://images.unsplash.com/photo-1531050171669-70c4838e5e55?auto=format&fit=crop&w=800" class="w-full h-full object-cover transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#d4af37]/30">
-                        <span class="gold-gradient text-[8px] font-black uppercase tracking-widest">Palm Jumeirah</span>
-                    </div>
-                </div>
-                <div class="p-8">
-                    <h3 class="text-2xl font-bold text-white mb-2 uppercase italic">Surf Club</h3>
-                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-6">Beach Elite • Sunset Rituals</p>
-                    <ul class="text-[11px] text-gray-400 space-y-2 mb-8 italic">
-                        <li>• Réservation Lit de Plage VIP</li>
-                        <li>• Accès Backstage DJ</li>
-                        <li>• Private Boat Arrival</li>
-                    </ul>
-                    <a id="wa-club-3" href="#" class="btn-vip w-full py-4 text-center block text-[10px] font-black tracking-widest">GUEST LIST SURF CLUB</a>
+            <!-- CLUB 3: SKY 2.0 (IMAGE UNIQUE) -->
+            <!-- CLUB 3: SKY 2.0 (SLIDESHOW DÉSALIGNÉ) -->
+        <div class="glass-card group overflow-hidden">
+            <div class="h-64 overflow-hidden relative slideshow-container">
+                <!-- Image Originale -->
+                <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreihveqigtv5tk6ubsclyf7y3xcr6zugqnysx7jatzhzlucmcm3bciy" class="w-full h-full object-cover grayscale group-hover:grayscale-0 active-slide">
+                
+                <!-- Nouvelle Image 1 -->
+                <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreib2jbcr7rzaikpky6pptcbxdktaihiwwmgwcj546fpdzmpt7jfwg4" class="w-full h-full object-cover grayscale group-hover:grayscale-0">
+                
+                <!-- Nouvelle Image 2 -->
+                <img src="https://bronze-traditional-smelt-189.mypinata.cloud/ipfs/bafkreihq3tkny3olcdoz2bufqu3dtz5snefw36yxwtqucu2ptdazuwiqte" class="w-full h-full object-cover grayscale group-hover:grayscale-0">
+                
+                <div class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#d4af37]/30 z-[10]">
+                    <span class="gold-gradient text-[8px] font-black uppercase tracking-widest">D3 District</span>
                 </div>
             </div>
+            <div class="p-8">
+                <h3 class="text-2xl font-bold text-white mb-2 uppercase italic">Sky 2.0</h3>
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-6">Iconic Dome • High Status Clubbing</p>
+                <ul class="text-[11px] text-gray-400 space-y-2 mb-8 italic">
+                    <li>• Entrée Prioritaire via Guest List</li>
+                    <li>• Placement Table Front-Stage</li>
+                    <li>• Production Visuelle Spectaculaire</li>
+                </ul>
+                <a id="wa-club-3" href="#" class="btn-vip w-full py-4 text-center block text-[10px] font-black tracking-widest">GUEST LIST SKY 2.0</a>
+            </div>
+        </div>
 
         </div>
     </div>
@@ -473,15 +533,17 @@ body > .skiptranslate { display: none !important; }
 
     <!-- SECTION QR CODE POUR PARTAGE -->
     <section class="py-20 bg-black text-center px-6">
-        <div class="glass-card max-w-sm mx-auto p-8 border-[#d4af37]">
-            <h3 class="gold-gradient font-bold mb-4 uppercase tracking-widest text-sm">Partager l'accès</h3>
-            <div class="bg-white p-2 inline-block rounded-xl mb-4">
-                <!-- Ici tu peux mettre l'image de ton QR code généré -->
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://partybcn.netlify.app/" alt="QR Code" id="qr-image">
-            </div>
-            <p class="text-[10px] text-gray-400 uppercase leading-relaxed">Fais scanner ce code à tes potes pour qu'ils profitent aussi de la Guest List & du Taxi gratuit.</p>
+    <div class="glass-card max-w-sm mx-auto p-8 border-[#d4af37]">
+        <h3 class="gold-gradient font-bold mb-4 uppercase tracking-widest text-sm">Share VIP Access</h3>
+        <div class="bg-white p-2 inline-block rounded-xl mb-4">
+            <!-- Le src est vide, le JS va le remplir dynamiquement -->
+            <img src="" alt="QR Code" id="qr-image" class="w-48 h-48">
         </div>
-    </section>
+        <p class="text-[10px] text-gray-400 uppercase leading-relaxed">
+            Fais scanner ce code à tes clients pour qu'ils profitent de la Guest List & des accès VIP exclusifs.
+        </p>
+    </div>
+</section>
 
     <!-- HORAIRES -->
     <footer class="py-10 text-center opacity-60">
@@ -540,80 +602,67 @@ body > .skiptranslate { display: none !important; }
     let promoter = urlParams.get('ref') || localStorage.getItem('promoter_id') || 'Direct';
     if (urlParams.get('ref')) localStorage.setItem('promoter_id', promoter);
 
-    // 2. MESSAGES WHATSAPP COMPLETS (Toutes tes langues conservées)
+    // 2. MESSAGES WHATSAPP
     const waMessages = {
-        fr: {
-            hero: "Salut! Je veux profiter de la Guest List Dubaï pour ce soir.",
-            muses: "Salut! Je suis intéressée par les offres Ladies Night à Dubaï.",
-            taxi: "Salut! Je veux un accès Fast Track pour ce soir à Dubaï.",
-            carre: "Salut! Je veux réserver une table VIP à Dubaï.",
-            sky: "Salut! Je veux être sur la Guest List pour SKY 2.0 Dubaï.",
-            soho: "Salut! Je veux un accès pour SOHO GARDEN.",
-            surf: "Salut! Je veux réserver au SURF CLUB Dubaï.",
-            float: "Salut! Je veux un accès VIP pour ce soir à Dubaï."
+        fr: { 
+            hero: "Salut! Je veux profiter de la Guest List Dubaï pour ce soir.", 
+            muses: "Salut! Je suis intéressée par les offres Muse Selection à Dubaï.", 
+            taxi: "Salut! Je veux un accès Fast Track pour ce soir à Dubaï.", 
+            carre: "Salut! Je veux réserver une table VIP à Dubaï.", 
+            sky: "Salut! Je veux réserver au NAMMOS Dubai.", 
+            soho: "Salut! Je veux réserver au NIKKI BEACH Dubai.", 
+            surf: "Salut! Je veux rejoindre la Guest List pour SKY 2.0 Dubai.", 
+            float: "Salut! Je veux un accès VIP pour ce soir à Dubaï." 
         },
-        en: {
-            hero: "Hi! I want to join the Dubai Guest List for tonight.",
-            muses: "Hi! I'm interested in the Ladies Night offers in Dubai.",
-            taxi: "Hi! I want Fast Track access for tonight in Dubai.",
-            carre: "Hi! I want to book a VIP table in Dubai.",
-            sky: "Hi! Put me on the Guest List for SKY 2.0 Dubai.",
-            soho: "Hi! I need access for SOHO GARDEN.",
-            surf: "Hi! I want to book at SURF CLUB Dubai.",
-            float: "Hi! I need VIP access for tonight in Dubai."
+        en: { 
+            hero: "Hi! I want to join the Dubai Guest List for tonight.", 
+            muses: "Hi! I'm interested in the Muse Selection offers in Dubai.", 
+            taxi: "Hi! I want Fast Track access for tonight in Dubai.", 
+            carre: "Hi! I want to book a VIP table in Dubai.", 
+            sky: "Hi! I want to book a table at NAMMOS Dubai.", 
+            soho: "Hi! I want to book at NIKKI BEACH Dubai.", 
+            surf: "Hi! I need a Guest List for SKY 2.0 tonight.", 
+            float: "Hi! I need VIP access for tonight in Dubai." 
         },
-        es: {
-            hero: "¡Hola! Quiero unirme a la Guest List de Dubái para esta noche.",
-            muses: "¡Hola! Estoy interesada en las ofertas de Ladies Night en Dubái.",
-            taxi: "¡Hola! Necesito un pase Fast Track para esta noche en Dubái.",
-            carre: "¡Hola! Quiero reservar una mesa VIP en Dubái.",
-            sky: "¡Hola! Quiero estar en la Guest List de SKY 2.0 Dubái.",
-            soho: "¡Hola! Necesito acceso para SOHO GARDEN.",
-            surf: "¡Hola! Quiero reservar en SURF CLUB Dubái.",
-            float: "¡Hola! Necesito acceso VIP para esta noche en Dubái."
+        es: { 
+            hero: "¡Hola! Quiero unirme a la Guest List de Dubái para esta noche.", 
+            muses: "¡Hola! Estoy interesada en las ofertas de Muse Selection en Dubái.", 
+            taxi: "¡Hola! Necesito un pase Fast Track para esta noche en Dubái.", 
+            carre: "¡Hola! Quiero reservar una mesa VIP en Dubái.", 
+            sky: "¡Hola! Quiero reservar en NAMMOS Dubai.", 
+            soho: "¡Hola! Quiero reservar en NIKKI BEACH Dubai.", 
+            surf: "¡Hola! Quiero estar en la Guest List de SKY 2.0.", 
+            float: "¡Hola! Necesito acceso VIP para esta noche en Dubái." 
         },
-        ru: {
-            hero: "Привет! Я хочу записаться в Guest List в Дубае на сегодня.",
-            muses: "Привет! Меня интересуют предложения Ladies Night в Дубае.",
-            taxi: "Привет! Мне нужен Fast Track на сегодня в Дубае.",
-            carre: "Привет! Я хочу забронировать VIP-столик в Дубае.",
-            sky: "Привет! Запиши меня в Guest List в SKY 2.0 Дубай.",
-            soho: "Привет! Мне нужен доступ в SOHO GARDEN.",
-            surf: "Привет! Я хочу забронировать столик в SURF CLUB Дубай.",
-            float: "Привет! Мне нужен VIP-доступ на сегодня в Дубае."
+        ru: { 
+            hero: "Привет! Я хочу записаться в Guest List в Дубае на сегодня.", 
+            muses: "Привет! Меня интересуют предложения Muse Selection в Дубае.", 
+            taxi: "Привет! Мне нужен Fast Track на сегодня в Дубае.", 
+            carre: "Привет! Я хочу забронировать VIP-столик в Дубае.", 
+            sky: "Привет! Я хочу забронировать столик в NAMMOS Dubai.", 
+            soho: "Привет! Я хочу забронировать столик в NIKKI BEACH Dubai.", 
+            surf: "Привет! Запиши меня в Guest List в SKY 2.0.", 
+            float: "Привет! Мне нужен VIP-доступ на сегодня в Дубае." 
         },
-        ar: {
-            hero: "مرحبًا! أريد الانضمام إلى قائمة الضيوف في دبي الليلة.",
-            muses: "مرحبًا! أنا مهتمة بعروض Ladies Night في دبي.",
-            taxi: "مرحبًا! أحتاج إلى دخول سريع الليلة في دبي.",
-            carre: "مرحبًا! أريد حجز طاولة VIP في دبي.",
-            sky: "مرحبًا! أريد التسجيل في قائمة ضيوف SKY 2.0 دبي.",
-            soho: "مرحبًا! أحتاج إلى دخول لنادي SOHO GARDEN.",
-            surf: "مرحبًا! أريد الحجز في SURF CLUB دبي.",
-            float: "مرحبًا! أحتاج إلى دخول VIP الليلة في دبي."
+        ar: { 
+            hero: "مرحبًا! أريد الانضمام إلى قائمة الضيوف في دبي الليلة.", 
+            muses: "مرحبًا! أنا مهتمة بعروض Muse Selection في دبي.", 
+            taxi: "مرحبًا! أحتاج إلى دخول سريع الليلة في دبي.", 
+            carre: "مرحبًا! أريد حجز طاولة VIP في دبي.", 
+            sky: "مرحبًا! أريد الحجز في NAMMOS دبي.", 
+            soho: "مرحبًا! أريد الحجز في NIKKI BEACH دبي.", 
+            surf: "مرحبًا! أريد التسجيل في قائمة ضيوف SKY 2.0.", 
+            float: "مرحبًا! أحتاج إلى دخول VIP الليلة في دبي." 
         }
     };
 
-    // 3. FONCTION DE TRADUCTION + WHATSAPP DYNAMIQUE
     function switchLang(langCode) {
         const select = document.querySelector('.goog-te-combo');
         if (select) { select.value = langCode; select.dispatchEvent(new Event('change')); }
-
         const num = "34602199293"; 
         const msg = waMessages[langCode] || waMessages['en'];
         const refTag = ` [Ref: ${promoter}]`; 
-        
-        const links = { 
-            'wa-hero': msg.hero, 
-            'wa-muses': msg.muses, 
-            'wa-taxi': msg.taxi, 
-            'wa-carre': msg.carre,
-            'wa-club-1': msg.sky, 
-            'wa-club-2': msg.soho, 
-            'wa-club-3': msg.surf, 
-            'wa-float': msg.float 
-        };
-        
+        const links = { 'wa-hero': msg.hero, 'wa-muses': msg.muses, 'wa-taxi': msg.taxi, 'wa-carre': msg.carre, 'wa-club-1': msg.sky, 'wa-club-2': msg.soho, 'wa-club-3': msg.surf, 'wa-float': msg.float };
         for (let id in links) {
             const el = document.getElementById(id);
             if(el) el.href = `https://wa.me/${num}?text=${encodeURIComponent(links[id] + refTag)}`;
@@ -621,18 +670,33 @@ body > .skiptranslate { display: none !important; }
         document.getElementById('langMenu').classList.add('hidden');
     }
 
-    // 4. INITIALISATION, VIDEOS ET SON
+    // 4. INITIALISATION & GESTION UNIQUE DES VIDÉOS
     document.addEventListener('DOMContentLoaded', () => {
-        // QR Code setup
-        const qrImg = document.getElementById('qr-image');
-        if (qrImg) {
-            const shareUrl = window.location.href.split('#')[0].split('?')[0] + `?ref=${promoter}`;
-            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(shareUrl)}`;
-        }
 
+    // --- LOGIQUE DIAPORAMA CLUBS ---
+        // --- LOGIQUE DIAPORAMA CLUBS (DÉSYNCHRONISÉ) ---
+        const slideshows = document.querySelectorAll('.slideshow-container');
+        slideshows.forEach((container, index) => {
+            const images = container.querySelectorAll('img');
+            if (images.length > 1) {
+                let currentIndex = 0;
+                
+                // On attend un peu plus pour chaque club avant de lancer son cycle
+                setTimeout(() => {
+                    setInterval(() => {
+                        images[currentIndex].classList.remove('active-slide');
+                        currentIndex = (currentIndex + 1) % images.length;
+                        images[currentIndex].classList.add('active-slide');
+                    }, 4000); // Cycle de 4s
+                }, index * 1500); // Décale le club 1 (0s), le club 2 (1.5s), le club 3 (3s)
+            }
+        });
         const allVideos = document.querySelectorAll('.pillar-video');
 
-        // Gérer le son sans couper la lecture
+        // Force la lecture immédiate en muet pour éviter le freeze
+        allVideos.forEach(v => { v.muted = true; v.play().catch(() => {}); });
+
+        // FONCTION SON (SANS PAUSE)
         const manageVideoSound = (activeVideo) => {
             allVideos.forEach(v => { v.muted = true; });
             if (activeVideo) {
@@ -641,17 +705,21 @@ body > .skiptranslate { display: none !important; }
             }
         };
 
-        // OBSERVATEUR MOBILE (Vidéo centrale = Son actif)
+        // QR Code (Modifié pour Dubaï / KYLER)
+        const qrImg = document.getElementById('qr-image');
+        if (qrImg) {
+            const baseUrl = "https://sl-excellence.com/dubaiparty";
+            const finalShareUrl = `${baseUrl}?ref=${promoter}`;
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(finalShareUrl)}`;
+        }
+
+        // OBSERVATEUR MOBILE (SCROLL)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                const card = entry.target.querySelector('.pillar-card');
                 const video = entry.target.querySelector('.pillar-video');
-                
+                const card = entry.target.querySelector('.pillar-card');
                 if (entry.isIntersecting) {
-                    if (card) {
-                        card.classList.add('active');
-                        setTimeout(() => card.classList.add('active-settled'), 900);
-                    }
+                    if (card) { card.classList.add('active'); setTimeout(() => card.classList.add('active-settled'), 900); }
                     if (window.innerWidth < 1024) manageVideoSound(video);
                 } else {
                     if (card) card.classList.remove('active', 'active-settled');
@@ -659,39 +727,33 @@ body > .skiptranslate { display: none !important; }
             });
         }, { threshold: 0.6 });
 
+        // GESTION PC (SURVOL) & Lancement Observer
         document.querySelectorAll('.pillar-item').forEach(item => {
             observer.observe(item);
-            // GESTION PC (Survol = Son actif)
             if (window.innerWidth >= 1024) {
                 item.addEventListener('mouseenter', () => manageVideoSound(item.querySelector('.pillar-video')));
                 item.addEventListener('mouseleave', () => manageVideoSound(null));
             }
         });
 
-        // SON + PLEIN ÉCRAN AU CLIC
+        // DÉBLOQUE LE SON AU PREMIER CLIC (BRIDGE)
+        document.body.addEventListener('click', () => {
+            allVideos.forEach(v => v.play().catch(() => {}));
+        }, { once: true });
+
+        // PLEIN ÉCRAN AU CLIC
         allVideos.forEach(video => {
             video.addEventListener('click', function() {
-                this.muted = !this.muted;
-                if (!this.muted && this.requestFullscreen) this.requestFullscreen();
+                if (this.requestFullscreen) this.requestFullscreen();
             });
         });
 
-        // Langue par défaut (Anglais)
         setTimeout(() => { if (document.querySelector('.goog-te-combo')) switchLang('en'); }, 1000);
     });
 
-    // Menu Planète
-    document.getElementById('langBtn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        document.getElementById('langMenu').classList.toggle('hidden');
-    });
+    document.getElementById('langBtn').addEventListener('click', (e) => { e.stopPropagation(); document.getElementById('langMenu').classList.toggle('hidden'); });
     document.addEventListener('click', () => document.getElementById('langMenu').classList.add('hidden'));
-
-    // Fix Scroll Google
-    setInterval(() => {
-        document.body.style.top = "0px";
-        document.body.style.position = "static";
-    }, 1000);
+    setInterval(() => { document.body.style.top = "0px"; document.body.style.position = "static"; }, 1000);
 </script>
 
     
