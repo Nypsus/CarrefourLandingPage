@@ -711,88 +711,81 @@ body > .skiptranslate { display: none !important; }
 
     // 4. INITIALISATION & GESTION UNIQUE DES VIDÉOS
     document.addEventListener('DOMContentLoaded', () => {
-
-    // --- LOGIQUE DIAPORAMA CLUBS ---
-        // --- LOGIQUE DIAPORAMA CLUBS (DÉSYNCHRONISÉ) ---
+        // --- 0. DÉFINITION DES VARIABLES ---
+        const allVideos = document.querySelectorAll('.pillar-video');
         const slideshows = document.querySelectorAll('.slideshow-container');
+        const qrImg = document.getElementById('qr-image');
+
+        // --- 1. LOGIQUE DIAPORAMA CLUBS (DÉSYNCHRONISÉ) ---
         slideshows.forEach((container, index) => {
             const images = container.querySelectorAll('img');
             if (images.length > 1) {
                 let currentIndex = 0;
-                
-                // On attend un peu plus pour chaque club avant de lancer son cycle
                 setTimeout(() => {
                     setInterval(() => {
                         images[currentIndex].classList.remove('active-slide');
                         currentIndex = (currentIndex + 1) % images.length;
                         images[currentIndex].classList.add('active-slide');
-                    }, 4000); // Cycle de 4s
-                }, index * 1500); // Décale le club 1 (0s), le club 2 (1.5s), le club 3 (3s)
+                    }, 4000);
+                }, index * 1500);
             }
         });
-        
-            // 1. Force le lancement de toutes les vidéos (MUET) pour éviter le freeze
-            allVideos.forEach(v => {
-                v.muted = true;
-                v.play().catch(() => {}); 
-            });
 
-            // 2. DÉBLOQUE L'AUDIO au premier contact (scroll ou clic)
-            const unlock = () => {
-                allVideos.forEach(v => {
-                    v.play().catch(() => {}); // Re-valide la lecture pour le navigateur
-                });
-                window.removeEventListener('touchstart', unlock);
-                window.removeEventListener('mousedown', unlock);
-            };
-            window.addEventListener('touchstart', unlock, { passive: true });
-            window.addEventListener('mousedown', unlock);
-        
-        
-            // FONCTION SON (SANS PAUSE)
-        const manageVideoSound = (activeVideo) => {
+        // --- 2. GESTION AUDIO & PRÉ-LANCEMENT (ANTI-FREEZE) ---
+        // Force le lancement de toutes les vidéos (MUET) immédiatement
+        allVideos.forEach(v => {
+            v.muted = true;
+            v.loop = true;
+            v.play().catch(() => {}); 
+        });
+
+        // DÉBLOQUE L'AUDIO au premier contact (scroll ou clic) pour mobile
+        const unlockAudio = () => {
             allVideos.forEach(v => {
-                v.muted = true; // On coupe le son de tout le monde sans arrêter l'image
+                v.play().catch(() => {}); // Re-valide pour le navigateur
             });
+            window.removeEventListener('touchstart', unlockAudio);
+            window.removeEventListener('mousedown', unlockAudio);
+        };
+        window.addEventListener('touchstart', unlockAudio, { passive: true });
+        window.addEventListener('mousedown', unlockAudio);
+
+        // FONCTION GESTION SON (SANS PAUSE)
+        const manageVideoSound = (activeVideo) => {
+            allVideos.forEach(v => { v.muted = true; });
             if (activeVideo) {
-                activeVideo.muted = false; // On libère le son de la vidéo active
-                activeVideo.play().catch(() => {}); // Sécurité
+                activeVideo.muted = false;
+                activeVideo.play().catch(() => {});
             }
         };
 
-        // QR Code (Modifié pour Dubaï / KYLER)
-        const qrImg = document.getElementById('qr-image');
+        // --- 3. QR CODE (Dubaï / KYLER) ---
         if (qrImg) {
             const baseUrl = "https://sl-excellence.com/dubaiparty";
             const finalShareUrl = `${baseUrl}?ref=${promoter}`;
             qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(finalShareUrl)}`;
         }
 
-        // --- OBSERVATEUR MOBILE (SCROLL) ---
-        const observer = new IntersectionObserver((entries) => {
+        // --- 4. OBSERVATEUR SERVICES (MOBILE SCROLL + ANIMATION) ---
+        const serviceObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const video = entry.target.querySelector('.pillar-video');
                 const card = entry.target.querySelector('.pillar-card');
-                
                 if (entry.isIntersecting) {
-                    if (card) {
-                        card.classList.add('active');
-                        setTimeout(() => card.classList.add('active-settled'), 900);
-                    }
-                    // Sur mobile : Unmute la vidéo centrale
-                    if (window.innerWidth < 1024 && video) {
-                        manageVideoSound(video);
-                    }
+                    if (card) { card.classList.add('active'); setTimeout(() => card.classList.add('active-settled'), 900); }
+                    if (window.innerWidth < 1024) manageVideoSound(video);
                 } else {
                     if (card) card.classList.remove('active', 'active-settled');
                 }
             });
-        }, { threshold: 0.6 }); // Déclenche quand 60% de la carte est visible
+        }, { threshold: 0.6 });
 
-        // --- OBSERVATEUR CLUBS MOBILE (Coloration au scroll) ---
+        document.querySelectorAll('.pillar-item').forEach(item => serviceObserver.observe(item));
+
+        // --- 5. OBSERVATEUR CLUBS MOBILE (Coloration au scroll) ---
         const clubCards = document.querySelectorAll('#dubai-clubs .glass-card');
         const clubObserver = new IntersectionObserver((entries) => {
-            if (window.innerWidth < 1024) { // Uniquement sur Mobile/Tablette
+            if (window.innerWidth < 1024) {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active-mobile');
@@ -801,27 +794,19 @@ body > .skiptranslate { display: none !important; }
                     }
                 });
             }
-        }, { 
-            threshold: 0.6 // Se déclenche quand 60% de la carte est visible (bien au centre)
-        });
+        }, { threshold: 0.6 });
 
         clubCards.forEach(card => clubObserver.observe(card));
 
-        // GESTION PC (SURVOL) & Lancement Observer
+        // --- 6. GESTION DESKTOP (SURVOL SON) ---
         document.querySelectorAll('.pillar-item').forEach(item => {
-            observer.observe(item);
             if (window.innerWidth >= 1024) {
                 item.addEventListener('mouseenter', () => manageVideoSound(item.querySelector('.pillar-video')));
                 item.addEventListener('mouseleave', () => manageVideoSound(null));
             }
         });
 
-        // DÉBLOQUE LE SON AU PREMIER CLIC (BRIDGE)
-        document.body.addEventListener('click', () => {
-            allVideos.forEach(v => v.play().catch(() => {}));
-        }, { once: true });
-
-        // PLEIN ÉCRAN AU CLIC
+        // --- 7. PLEIN ÉCRAN & FINITIONS ---
         allVideos.forEach(video => {
             video.addEventListener('click', function() {
                 if (this.requestFullscreen) this.requestFullscreen();
