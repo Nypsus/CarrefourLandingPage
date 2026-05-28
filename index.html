@@ -181,9 +181,35 @@
             border-radius: 50%;
             border: 4px solid #000;
         }
+
+        /* LANGUAGE SELECTOR STYLES */
+    #language-selector { transition: all 0.5s ease; }
+    #language-selector:hover i { transform: rotate(20deg); color: #f6e27a; }
+    .skiptranslate { display: none !important; }
+    body { top: 0px !important; }
     </style>
 </head>
 <body class="antialiased">
+    <!-- LANGUAGE SWITCHER (TOP LEFT) -->
+<!-- LANGUAGE SWITCHER (TOP RIGHT pour éviter le gros logo) -->
+<div id="language-selector" class="fixed right-6 top-6 z-[130] group">
+    <div class="relative p-3 rounded-full bg-[#020c1b]/40 backdrop-blur-md border border-[#d4af37]/30 cursor-pointer transition-all duration-500 group-hover:border-[#f6e27a] group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+        <i data-feather="globe" class="w-6 h-6 text-[#d4af37] transition-colors"></i>
+        
+        <!-- Menu Déroulant (Aligné à droite : right-0) -->
+        <div class="absolute right-0 mt-4 w-40 bg-[#020c1b]/90 backdrop-blur-xl border border-[#d4af37]/30 rounded-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 translate-y-2 group-hover:translate-y-0 shadow-2xl">
+            <div class="flex flex-col py-2">
+                <button onclick="changeLanguage('en')" class="px-4 py-3 text-left text-[10px] font-black uppercase tracking-widest text-white hover:bg-[#d4af37]/20 hover:text-[#f6e27a] transition-all">🇬🇧 English</button>
+                <button onclick="changeLanguage('es')" class="px-4 py-3 text-left text-[10px] font-black uppercase tracking-widest text-white hover:bg-[#d4af37]/20 hover:text-[#f6e27a] transition-all border-t border-[#d4af37]/10">🇪🇸 Español</button>
+                <button onclick="changeLanguage('fr')" class="px-4 py-3 text-left text-[10px] font-black uppercase tracking-widest text-white hover:bg-[#d4af37]/20 hover:text-[#f6e27a] transition-all border-t border-[#d4af37]/10">🇫🇷 Français</button>
+                <button onclick="changeLanguage('it')" class="px-4 py-3 text-left text-[10px] font-black uppercase tracking-widest text-white hover:bg-[#d4af37]/20 hover:text-[#f6e27a] transition-all border-t border-[#d4af37]/10">🇮🇹 Italiano</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden Google Element -->
+<div id="google_translate_element" style="display:none"></div>
 
     <!-- 🏆 LOGO SL EXCELLENCE (Positionné à gauche, taille massive h-28) -->
     <div class="absolute top-4 left-6 z-50">
@@ -325,21 +351,40 @@
         // Init Icons
         feather.replace();
 
-        // Init Vanta (Background animé)
-        VANTA.GLOBE({
-            el: "#vanta-bg",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            color: 0xd4af37,
-            color2: 0xb8860b,
-            size: 0.8,
-            backgroundColor: 0x050505
-        })
+        
+
+        // 1. Initialisation Google Translate (Source : Français)
+// 1. Initialisation (Source : Anglais pour cette page)
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'en', // <--- IMPORTANT : cette page est en anglais
+        includedLanguages: 'en,es,fr,it',
+        autoDisplay: false
+    }, 'google_translate_element');
+}
+
+// 2. Fonction Cookie (Source : Anglais)
+function changeLanguage(langCode) {
+    const domain = location.hostname.replace('tech.', '').replace('www.', ''); 
+    const cookieValue = "/en/" + langCode; // <--- IMPORTANT : on part de /en/
+    
+    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "googtrans=" + cookieValue + "; path=/";
+    document.cookie = "googtrans=" + cookieValue + "; path=/; domain=" + location.hostname;
+    if(domain.includes('.')) {
+        document.cookie = "googtrans=" + cookieValue + "; path=/; domain=." + domain;
+    }
+    location.reload();
+}
+
+// 3. Chargement de l'API Google
+(function() {
+    var gt = document.createElement('script');
+    gt.type = 'text/javascript';
+    gt.async = true;
+    gt.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    document.body.appendChild(gt);
+})();
     </script>
 </body>
 </html>
