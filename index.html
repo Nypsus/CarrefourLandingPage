@@ -393,11 +393,45 @@ function changeLanguage(langCode) {
 <!-- ==========================================
      WIDGET AI CONCIERGE SL EXCELLENCE (V11)
      ========================================== -->
-<div id="ai-master-portal" style="position: fixed !important; z-index: 2147483647 !important;">
+<!-- Remplace ta ligne actuelle par celle-ci -->
+<div id="ai-master-portal" style="position: fixed !important; bottom: 0; right: 0; width: 0; height: 0; pointer-events: none; z-index: 2147483647;">
     <style>
-        #ai-master-portal * { font-family: 'Montserrat', sans-serif !important; box-sizing: border-box !important; margin: 0; padding: 0; }
+
+        /* FORCE LA DISPARITION QUAND LES MENUS SONT OUVERTS */
+body:has(#mobile-menu:not(.hidden)) #ai-master-portal,
+body:has(#side-menu.open) #ai-master-portal {
+    opacity: 0 !important; /* Totalement invisible */
+    visibility: hidden !important; /* Désactive complètement l'élément */
+    pointer-events: none !important; /* Rend impossible tout clic */
+    z-index: -1 !important; /* Passe derrière le fond du site */
+}
+
+/* On force aussi le bouton spécifiquement */
+body:has(#mobile-menu:not(.hidden)) #ai-ultimate-btn,
+body:has(#side-menu.open) #ai-ultimate-btn {
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
         
-        /* FENÊTRE : ANCRAGE BAS-DROITE + FOND OPAQUE + GLASS */
+
+        /* 2. PORTAIL GLOBAL : On le réduit à 0 pour qu'il ne recouvre AUCUNE zone du site */
+        #ai-master-portal {
+            position: fixed !important;
+            bottom: 0;
+            right: 0;
+            width: 0 !important;
+            height: 0 !important;
+            pointer-events: none !important; /* Les clics traversent tout vers ton site */
+        }
+
+        #ai-master-portal * { 
+            font-family: 'Montserrat', sans-serif !important; 
+            box-sizing: border-box !important; 
+            margin: 0; padding: 0; 
+        }
+        
+        /* 3. FENÊTRE DE CHAT : On redonne le droit de cliquer à l'intérieur */
         #ai-ultimate-window {
             position: fixed !important;
             bottom: 100px !important;
@@ -408,109 +442,45 @@ function changeLanguage(langCode) {
             max-height: 75vh !important;
             background: rgba(2, 12, 27, 0.98) !important; 
             backdrop-filter: blur(20px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
             border: 1.5px solid rgba(212, 175, 55, 0.5) !important;
             border-radius: 24px !important;
             display: none;
             flex-direction: column !important;
             box-shadow: 0 20px 80px rgba(0,0,0,1) !important;
-            
-            /* MODIF : On le met à 46 pour que le bot à 47 passe devant */
-            z-index: 2147483646 !important; 
-            
+            z-index: 40001 !important; 
             overflow: hidden !important;
             isolation: isolate !important;
+            pointer-events: auto !important; /* Cliquable */
         }
 
-        .ai-header-gold {
-            background: linear-gradient(90deg, #d4af37, #f6e27a, #b8860b) !important;
-            padding: 18px 22px !important;
-            color: #000 !important;
-            font-weight: 900 !important;
-            text-transform: uppercase !important;
-            font-size: 13px !important;
-            display: flex !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            letter-spacing: 1px !important;
-        }
-
-        #ai-box {
-            flex: 1 !important;
-            padding: 20px !important;
-            overflow-y: auto !important;
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 12px !important;
-            background: transparent !important;
-        }
-
-        /* BULLES DE MESSAGES */
-        .ai-msg-ia, .ai-msg-user { 
-            color: #fff !important; 
-            padding: 12px 16px !important; 
-            font-size: 14px !important;
-            line-height: 1.5 !important;
-            word-wrap: break-word !important;
-        }
-        .ai-msg-ia { 
-            background: rgba(212, 175, 55, 0.15) !important; 
-            border-radius: 18px 18px 18px 4px !important; 
-            align-self: flex-start !important; 
-            max-width: 85% !important; 
-            border: 1px solid rgba(212, 175, 55, 0.3) !important;
-            color: #f6e27a !important;
-        }
-        .ai-msg-user { 
-            background: rgba(255, 255, 255, 0.1) !important; 
-            border-radius: 18px 18px 4px 18px !important; 
-            align-self: flex-end !important; 
-            max-width: 85% !important; 
-            border: 1px solid rgba(255,255,255,0.1) !important;
-        }
-
-        /* BOUTON FLOTTANT */
-        #ai-ultimate-btn {
+        /* 4. LE BOUTON FLOTTANT : Correction de la position (bottom) */
+       #ai-ultimate-btn {
     position: fixed !important;
-    bottom: -40px !important; /* Ajuste pour descendre l'image globale */
-    right: 0px !important;
-    
-    /* On augmente la zone de clic pour que l'image puisse être grande */
-    width: 200px !important; 
-    height: 210px !important;
-    
-    background: transparent !important; /* Supprime le fond jaune */
-    border: none !important; /* Supprime l'ancienne bordure */
-    
-    /* CRUCIAL : Supprimer ces deux lignes ou les mettre comme ça : */
-    border-radius: 0 !important; /* On n'est plus forcé d'être un cercle */
-    overflow: visible !important; /* L'image ne sera plus coupée par les bords du bouton */
-    
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 80px !important;   /* Taille réelle du cercle */
+    height: 80px !important;  /* Taille réelle du cercle */
+    background: transparent !important;
+    border: none !important;
+    border-radius: 50% !important; /* Force la zone de clic en cercle parfait */
     cursor: pointer !important;
-    z-index: 2147483647 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    z-index: 40002 !important;
     padding: 0 !important;
-    
-    /* On enlève l'ombre qui faisait le contour de la boule */
-    box-shadow: none !important; 
-    
+    margin: 0 !important;
+    pointer-events: auto !important; /* Seul ce cercle capte les clics */
+    overflow: hidden !important; /* Coupe tout ce qui dépasse du cercle */
+    display: block !important; /* Block est plus précis que flex pour la hitbox ici */
     animation: aiJump 4s infinite ease-in-out !important;
 }
 
 #ai-ultimate-btn img {
-    /* L'image va maintenant prendre toute la place disponible dans les 250px */
     width: 100% !important;
-    height: auto !important;
-    
-    /* Pour la descendre spécifiquement elle, sans bouger le bouton */
-    transform: translateY(20px) !important; 
-    
-    border-radius: 0 !important; /* Supprime l'arrondi sur l'image elle-même */
-    object-fit: contain !important; /* Garde les proportions sans couper */
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)) !important; /* Ajoute une ombre à la forme de l'image (pas au carré) */
+    height: 100% !important;
+    display: block !important;
+    object-fit: cover !important;
 }
+
+        /* --- LE RESTE DU CODE (MOBILE, TYPING, MSGS) RESTE IDENTIQUE --- */
         /* FOOTER ÉPURÉ AVEC WHATSAPP */
         .ai-footer {
             padding: 12px 15px !important;
@@ -644,17 +614,25 @@ function changeLanguage(langCode) {
 
 /* --- DESIGN PC : ON GARDE TOUT IDENTIQUE --- */
 @media (min-width: 768px) {
+    /* --- TAILLE DU ROBOT SUR PC --- */
+    #ai-ultimate-btn {
+        width: 120px !important;  /* <--- MODIFIE ICI LA TAILLE SUR PC */
+        height: 120px !important; /* <--- DOIT ÊTRE LA MÊME VALEUR */
+        z-index: 2147483647 !important;
+    }
+
     /* Sur PC, on s'assure juste que le bot est devant quand on ouvre */
     #ai-ultimate-window {
         z-index: 2147483640 !important;
     }
-    #ai-ultimate-btn {
-        z-index: 2147483647 !important;
-    }
+
     /* On supprime toute transformation ou réduction de taille ici */
     .ai-opened #ai-ultimate-btn {
         transform: none !important;
         opacity: 1 !important;
+        /* On remet la même taille ici pour qu'il ne saute pas au clic */
+        width: 120px !important; 
+        height: 120px !important;
     }
 }
 
@@ -667,7 +645,7 @@ function changeLanguage(langCode) {
 
     <button id="ai-ultimate-btn" onclick="toggleChat()">
     <!-- Remplace le lien ci-dessous par l'URL de ton image (Pinata, Google, etc.) -->
-        <img src="https://emerald-immense-sole-618.mypinata.cloud/ipfs/bafkreihw4liyidppfvk7uqkgmuobq2mvu7idnxghkycu5mbqmfnqdfcgky" alt="SL IA" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; filter: none !important;">
+        <img src="https://emerald-immense-sole-618.mypinata.cloud/ipfs/bafybeifu57c5zotybcapneeetycn7d5p2bcqcfc4acme2hpagzf3xxysm4" alt="SL IA" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; filter: none !important;">
     </button>
 
     <div id="ai-ultimate-window">
