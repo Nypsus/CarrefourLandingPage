@@ -386,5 +386,495 @@ function changeLanguage(langCode) {
     document.body.appendChild(gt);
 })();
     </script>
+
+
+
+
+<!-- ==========================================
+     WIDGET AI CONCIERGE SL EXCELLENCE (V11)
+     ========================================== -->
+<div id="ai-master-portal" style="position: fixed !important; z-index: 2147483647 !important;">
+    <style>
+        #ai-master-portal * { font-family: 'Montserrat', sans-serif !important; box-sizing: border-box !important; margin: 0; padding: 0; }
+        
+        /* FENÊTRE : ANCRAGE BAS-DROITE + FOND OPAQUE + GLASS */
+        #ai-ultimate-window {
+            position: fixed !important;
+            bottom: 100px !important;
+            right: 25px !important;
+            width: 380px !important;
+            max-width: 85vw !important;
+            height: 550px !important;
+            max-height: 75vh !important;
+            background: rgba(2, 12, 27, 0.98) !important; 
+            backdrop-filter: blur(20px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+            border: 1.5px solid rgba(212, 175, 55, 0.5) !important;
+            border-radius: 24px !important;
+            display: none;
+            flex-direction: column !important;
+            box-shadow: 0 20px 80px rgba(0,0,0,1) !important;
+            
+            /* MODIF : On le met à 46 pour que le bot à 47 passe devant */
+            z-index: 2147483646 !important; 
+            
+            overflow: hidden !important;
+            isolation: isolate !important;
+        }
+
+        .ai-header-gold {
+            background: linear-gradient(90deg, #d4af37, #f6e27a, #b8860b) !important;
+            padding: 18px 22px !important;
+            color: #000 !important;
+            font-weight: 900 !important;
+            text-transform: uppercase !important;
+            font-size: 13px !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            letter-spacing: 1px !important;
+        }
+
+        #ai-box {
+            flex: 1 !important;
+            padding: 20px !important;
+            overflow-y: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+            background: transparent !important;
+        }
+
+        /* BULLES DE MESSAGES */
+        .ai-msg-ia, .ai-msg-user { 
+            color: #fff !important; 
+            padding: 12px 16px !important; 
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+            word-wrap: break-word !important;
+        }
+        .ai-msg-ia { 
+            background: rgba(212, 175, 55, 0.15) !important; 
+            border-radius: 18px 18px 18px 4px !important; 
+            align-self: flex-start !important; 
+            max-width: 85% !important; 
+            border: 1px solid rgba(212, 175, 55, 0.3) !important;
+            color: #f6e27a !important;
+        }
+        .ai-msg-user { 
+            background: rgba(255, 255, 255, 0.1) !important; 
+            border-radius: 18px 18px 4px 18px !important; 
+            align-self: flex-end !important; 
+            max-width: 85% !important; 
+            border: 1px solid rgba(255,255,255,0.1) !important;
+        }
+
+        /* BOUTON FLOTTANT */
+        #ai-ultimate-btn {
+    position: fixed !important;
+    bottom: -40px !important; /* Ajuste pour descendre l'image globale */
+    right: 0px !important;
+    
+    /* On augmente la zone de clic pour que l'image puisse être grande */
+    width: 200px !important; 
+    height: 210px !important;
+    
+    background: transparent !important; /* Supprime le fond jaune */
+    border: none !important; /* Supprime l'ancienne bordure */
+    
+    /* CRUCIAL : Supprimer ces deux lignes ou les mettre comme ça : */
+    border-radius: 0 !important; /* On n'est plus forcé d'être un cercle */
+    overflow: visible !important; /* L'image ne sera plus coupée par les bords du bouton */
+    
+    cursor: pointer !important;
+    z-index: 2147483647 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    
+    /* On enlève l'ombre qui faisait le contour de la boule */
+    box-shadow: none !important; 
+    
+    animation: aiJump 4s infinite ease-in-out !important;
+}
+
+#ai-ultimate-btn img {
+    /* L'image va maintenant prendre toute la place disponible dans les 250px */
+    width: 100% !important;
+    height: auto !important;
+    
+    /* Pour la descendre spécifiquement elle, sans bouger le bouton */
+    transform: translateY(20px) !important; 
+    
+    border-radius: 0 !important; /* Supprime l'arrondi sur l'image elle-même */
+    object-fit: contain !important; /* Garde les proportions sans couper */
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)) !important; /* Ajoute une ombre à la forme de l'image (pas au carré) */
+}
+        /* FOOTER ÉPURÉ AVEC WHATSAPP */
+        .ai-footer {
+            padding: 12px 15px !important;
+            border-top: 1px solid rgba(212, 175, 55, 0.2) !important;
+            display: flex !important;
+            background: rgba(0,0,0,0.8) !important;
+            align-items: center !important;
+            gap: 10px !important;
+        }
+        #ai-input-text { 
+            flex: 1 !important; 
+            background: rgba(255,255,255,0.05) !important; 
+            border: 1px solid rgba(212, 175, 55, 0.2) !important; 
+            border-radius: 10px !important;
+            padding: 10px !important; 
+            color: #fff !important; 
+            outline: none !important; 
+            font-size: 16px !important;
+        }
+
+        /* INDICATEUR D'ÉCRITURE */
+        .typing-dots { display: flex !important; gap: 4px !important; padding: 12px 16px !important; }
+        .typing-dots span { 
+            width: 6px !important; height: 6px !important; background: #d4af37 !important; 
+            border-radius: 50% !important; animation: dotPulse 1.5s infinite !important;
+        }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s !important; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s !important; }
+
+        @keyframes aiJump {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-12px); }
+            60% { transform: translateY(-6px); }
+        }
+        @keyframes dotPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        #ai-box::-webkit-scrollbar { width: 4px; }
+        #ai-box::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+    
+    
+    /* --- DESIGN MOBILE : PLEIN ÉCRAN + BOT SOUS LE HEADER (MÊME AXE) --- */
+@media (max-width: 767px) {
+
+    #ai-master-portal, #ai-master-portal * {
+        /* Supprime le rectangle de focus au clic */
+        -webkit-tap-highlight-color: transparent !important;
+        /* Empêche de sélectionner le texte par erreur en scrollant */
+        -webkit-user-select: none !important; 
+        user-select: none !important;
+    }
+
+    /* On autorise la sélection UNIQUEMENT dans les bulles pour copier les liens */
+    .ai-msg-ia, .ai-msg-user {
+        -webkit-user-select: text !important;
+        user-select: text !important;
+    }
+
+
+    #ai-master-portal {
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-touch-callout: none !important;
+        user-select: none !important;
+    }
+
+    /* On réactive la sélection uniquement pour le texte des bulles */
+    .ai-msg-ia, .ai-msg-user {
+        user-select: text !important;
+        -webkit-user-select: text !important;
+    }
+
+
+    #ai-ultimate-window {
+        /* On force le collage parfait aux 4 coins */
+        top: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100dvh !important; /* d pour dynamique : gère le clavier */
+        max-height: 100dvh !important;
+        
+        /* FOND TOTALEMENT OPAQUE pour ne plus voir le site derrière */
+        background: #020c1b !important; 
+        
+        border-radius: 0 !important;
+        border: none !important;
+        z-index: 2147483640 !important;
+    }
+
+    /* POSITION DU BOT OUVERT */
+    .ai-opened #ai-ultimate-btn {
+        bottom: auto !important;
+        top: 20px !important; /* Ajuste pour le monter/descendre */
+        right: 0px !important; 
+        width: 180px !important; 
+        height: 190px !important;
+        animation: none !important;
+        z-index: 2147483647 !important;
+        pointer-events: none !important;
+    }
+
+    /* EMPÊCHER LE ZOOM iOS lors du clic sur le texte */
+    #ai-input-text { 
+        font-size: 16px !important; 
+    }
+
+
+    .ai-opened #ai-ultimate-btn {
+        bottom: auto !important;
+        /* On le descend de 65px pour laisser la croix (X) libre dans le header */
+        top: 20px !important; 
+        /* On garde exactement le même axe que quand il est fermé */
+        right: 0px !important; 
+        
+        /* On garde sa taille originale parfaite (200x210) */
+        width: 200px !important; 
+        height: 210px !important;
+        
+        animation: none !important;
+        z-index: 2147483647 !important; /* Devant la conversation */
+        pointer-events: none !important; 
+        opacity: 1 !important;
+    }
+
+    /* On garde ton style d'image mais sans rotation forcée si tu n'en veux pas */
+    .ai-opened #ai-ultimate-btn img {
+        transform: translateY(0) !important;
+    }
+}
+
+/* --- DESIGN PC : ON GARDE TOUT IDENTIQUE --- */
+@media (min-width: 768px) {
+    /* Sur PC, on s'assure juste que le bot est devant quand on ouvre */
+    #ai-ultimate-window {
+        z-index: 2147483640 !important;
+    }
+    #ai-ultimate-btn {
+        z-index: 2147483647 !important;
+    }
+    /* On supprime toute transformation ou réduction de taille ici */
+    .ai-opened #ai-ultimate-btn {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+}
+
+
+
+
+
+
+    </style>
+
+    <button id="ai-ultimate-btn" onclick="toggleChat()">
+    <!-- Remplace le lien ci-dessous par l'URL de ton image (Pinata, Google, etc.) -->
+        <img src="https://emerald-immense-sole-618.mypinata.cloud/ipfs/bafkreihw4liyidppfvk7uqkgmuobq2mvu7idnxghkycu5mbqmfnqdfcgky" alt="SL IA" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; filter: none !important;">
+    </button>
+
+    <div id="ai-ultimate-window">
+        <div class="ai-header-gold">
+            <span>Concierge - SL Excellence</span>
+            <span onclick="toggleChat()" style="cursor:pointer; font-size:28px; line-height:1;">&times;</span>
+        </div>
+        <div id="ai-box"></div>
+        <div class="ai-footer">
+            <input type="text" id="ai-input-text" placeholder="Tapez ici...">
+            <a id="wa-switch-link" href="#" target="_blank" style="display: flex !important; align-items: center;">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="28" style="transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function refreshCalendar() {
+    const container = document.querySelector('.calendar-wrapper div[style*="filter"]');
+    const iframe = container ? container.querySelector('iframe') : null;
+    
+    if (iframe) {
+        // On récupère l'URL de base sans les anciens paramètres de cache
+        let baseUrl = iframe.src.split('&cache=')[0];
+        // On ajoute un paramètre unique (le timestamp actuel) pour forcer Google à recharger
+        iframe.src = baseUrl + '&cache=' + new Date().getTime();
+        console.log("Agenda rafraîchi de force !");
+    }
+}
+
+(function() {
+    // FORCE LE DÉPLACEMENT DANS LE BODY POUR BYPASSER LES Z-INDEX DU SITE
+    const portal = document.getElementById('ai-master-portal');
+    document.body.appendChild(portal);
+
+    const SERVER_URL = "https://ia-whatsapp-demarchage-client.onrender.com/webchat"; 
+
+    function getLang() {
+        const match = document.cookie.match(new RegExp('(^| )googtrans=([^;]+)'));
+        if (match) return match[2].split('/').pop();
+        return navigator.language.split('-')[0] || 'fr';
+    }
+
+    const lang = getLang();
+    const greets = {
+        'fr': ['Bonjour, je suis l\'assistant de SL Excellence.', 'En quoi puis-je vous aider ?'],
+        'es': ['Hola, soy el asistente de SL Excellence.', '¿En qué puedo ayudarle?'],
+        'en': ['Hello, I am the SL Excellence assistant.', 'How can I help you?'],
+        'it': ['Buongiorno, sono l\'assistant di SL Excellence.', 'Come posso aiutarla?']
+    };
+
+    const win = document.getElementById('ai-ultimate-window');
+    const box = document.getElementById('ai-box');
+    const input = document.getElementById('ai-input-text');
+    const waLink = document.getElementById('wa-switch-link');
+
+    // Init WhatsApp
+    const waText = {
+        'fr': 'Bonjour! Je viens de votre site et je souhaite plus d\'informations.',
+        'es': 'Hola! Vengo de vuestra web y quiero más información.',
+        'en': 'Hello! I am coming from your website and I need more info.'
+    };
+    waLink.href = `https://wa.me/34602199293?text=${encodeURIComponent(waText[lang] || waText['fr'])}`;
+
+    function linkify(text) {
+        const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+        return text.replace(urlPattern, '<a href="$1" target="_blank" style="color:#f6e27a; text-decoration:underline;">$1</a>');
+    }
+
+    function showTyping(callback) {
+        const dots = document.createElement('div');
+        dots.className = 'ai-msg-ia typing-dots';
+        dots.innerHTML = '<span></span><span></span><span></span>';
+        box.appendChild(dots);
+        box.scrollTop = box.scrollHeight;
+        setTimeout(() => { dots.remove(); callback(); }, 1200);
+    }
+
+    function appendMsg(text, type, callback) {
+    const div = document.createElement('div');
+    div.className = type === 'ia' ? 'ai-msg-ia' : 'ai-msg-user';
+    box.appendChild(div);
+
+    const labels = { 'fr': 'Vous', 'es': 'Tú', 'en': 'You', 'it': 'Tu' };
+    const userLabel = labels[getLang()] || 'Vous';
+    
+    if (type === 'ia') {
+        let i = 0;
+        // On désactive la sélection pendant l'écriture
+        div.style.userSelect = "none"; 
+        div.style.webkitUserSelect = "none";
+
+        const timer = setInterval(() => {
+            div.innerHTML = `<b>IA :</b> ` + linkify(text.substr(0, i));
+            i++;
+            box.scrollTop = box.scrollHeight;
+            if (i > text.length) { 
+                clearInterval(timer); 
+                // L'IA a fini : on autorise la sélection et on ajoute la classe finished
+                div.classList.add('finished');
+                div.style.userSelect = "text";
+                div.style.webkitUserSelect = "text";
+                if (callback) callback(); 
+            }
+        }, 15);
+    } else {
+        div.innerHTML = `<b>${userLabel} :</b> ` + linkify(text);
+        div.classList.add('finished'); // Le message utilisateur est direct fini
+        box.scrollTop = box.scrollHeight;
+        if (callback) callback();
+    }
+}
+
+    window.toggleChat = function() {
+        const portal = document.getElementById('ai-master-portal');
+        const isOpen = win.style.display === 'flex';
+        
+        win.style.display = isOpen ? 'none' : 'flex';
+        
+        if (!isOpen) {
+            portal.classList.add('ai-opened');
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.backgroundColor = '#020c1b'; 
+        } else {
+            portal.classList.remove('ai-opened');
+            document.body.style.overflow = '';
+            document.documentElement.style.backgroundColor = ''; 
+        }
+        
+        localStorage.setItem('sl_chat_open', !isOpen);
+        // Mise à jour de l'activité quand on ouvre le chat
+        localStorage.setItem('sl_last_interaction', Date.now());
+
+        if (!isOpen && box.innerHTML === "") {
+            const msgs = greets[lang] || greets['fr'];
+            showTyping(() => appendMsg(msgs[0], 'ia', () => setTimeout(() => showTyping(() => appendMsg(msgs[1], 'ia')), 600)));
+        }
+    };
+
+    async function handleChatSubmit() {
+        const msg = input.value.trim();
+        if (!msg) return;
+        appendMsg(msg, 'user');
+        input.value = '';
+
+        // --- AJOUT : On remet le compteur à zéro (2h) à chaque message envoyé ---
+        localStorage.setItem('sl_last_interaction', Date.now());
+        
+        showTyping(async () => {
+            try {
+                const r = await fetch(SERVER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: msg, user_id: localStorage.getItem('sl_user_id') })
+                });
+                const d = await r.json();
+
+                if (typeof refreshCalendar === "function") refreshCalendar(); 
+                
+                const segments = d.reply.split(/[.!?]\s/).filter(s => s.trim().length > 0);
+                let finalMessages = (segments.length > 3) ? 
+                    [segments.slice(0, Math.ceil(segments.length/2)).join('. ') + '.', segments.slice(Math.ceil(segments.length/2)).join('. ') + '.'] 
+                    : [d.reply];
+
+                let currentIdx = 0;
+                const sendNext = () => {
+                    if (currentIdx < finalMessages.length) {
+                        appendMsg(finalMessages[currentIdx], 'ia', () => {
+                            currentIdx++;
+                            if (currentIdx < finalMessages.length) setTimeout(() => showTyping(sendNext), 500);
+                            else {
+                                localStorage.setItem('sl_history', box.innerHTML);
+                                // On met aussi à jour l'activité quand l'IA répond
+                                localStorage.setItem('sl_last_interaction', Date.now());
+                            }
+                        });
+                    }
+                };
+                sendNext();
+            } catch (e) { appendMsg("Désolé, j'ai une difficulté de connexion.", 'ia'); }
+        });
+    }
+
+    input.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleChatSubmit(); });
+
+    // --- LOGIQUE DE NETTOYAGE VISUEL (Initialisation) ---
+    const NOW = Date.now();
+    const TWO_HOURS = 2 * 60 * 60 * 1000;
+    const lastSeen = localStorage.getItem('sl_last_interaction');
+
+    // Si plus de 2h d'inactivité, on supprime l'historique VISUEL
+    if (lastSeen && (NOW - lastSeen > TWO_HOURS)) {
+        localStorage.removeItem('sl_history');
+    }
+    // On met à jour le temps de visite (pour dire qu'il est là maintenant)
+    localStorage.setItem('sl_last_interaction', NOW);
+
+    // On garde l'ID USER intact (Il n'est jamais supprimé ici)
+    if (!localStorage.getItem('sl_user_id')) {
+        localStorage.setItem('sl_user_id', 'u_' + Math.random().toString(36).substring(7));
+    }
+
+    const saved = localStorage.getItem('sl_history');
+    if (saved) box.innerHTML = saved;
+    if (localStorage.getItem('sl_chat_open') === 'true') toggleChat();
+})();
+</script>
 </body>
 </html>
