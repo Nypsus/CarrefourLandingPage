@@ -532,6 +532,7 @@ body:has(#side-menu.open) #ai-master-portal {
             background: rgba(0,0,0,0.8) !important;
             align-items: center !important;
             gap: 10px !important;
+            padding-right: 90px !important; 
         }
         #ai-input-text { 
             flex: 1 !important; 
@@ -567,10 +568,10 @@ body:has(#side-menu.open) #ai-master-portal {
 @media (max-width: 767px) {
 /* --- TAILLE DU ROBOT SUR Mobil --- */
     #ai-ultimate-btn {
-        width: 120px !important;   /* Modifie cette valeur pour la TAILLE */
-        height: 120px !important;  /* Doit être identique à width */
-        bottom: 20px !important;  /* Modifie pour monter/descendre le robot */
-        right: -10px !important;   /* Modifie pour l'éloigner du bord droit */
+        width: 80px !important;   /* Modifie cette valeur pour la TAILLE */
+        height: 80px !important;  /* Doit être identique à width */
+        bottom: 40px !important;  /* Modifie pour monter/descendre le robot */
+        right: -3px !important;   /* Modifie pour l'éloigner du bord droit */
     }
 
     #ai-master-portal, #ai-master-portal * {
@@ -625,7 +626,7 @@ body:has(#side-menu.open) #ai-master-portal {
     /* --- DESIGN MOBILE : ROBOT QUAND LA CONVERSATION EST OUVERTE --- */
     .ai-opened #ai-ultimate-btn {
         bottom: auto !important;
-        top: 60px !important;    /* Position par rapport au haut */
+        top: 490px !important;    /* Position par rapport au haut */
         right: 0px !important;   /* Position par rapport à la droite */
         width: 120px !important;  /* TAILLE : Largeur */
         height: 120px !important; /* TAILLE : Hauteur */
@@ -654,8 +655,8 @@ body:has(#side-menu.open) #ai-master-portal {
     #ai-ultimate-btn {
         width: 120px !important;   /* Taille du robot sur PC */
         height: 120px !important;  /* Taille du robot sur PC */
-        bottom: 20px !important;  /* Distance du bord bas */
-        right: 0px !important;   /* Distance du bord droit */
+        bottom: 50px !important;  /* Distance du bord bas */
+        right: -3px !important;   /* Distance du bord droit */
     }
 
     /* Sur PC, on s'assure juste que le bot est devant quand on ouvre */
@@ -681,21 +682,29 @@ body:has(#side-menu.open) #ai-master-portal {
 
     <button id="ai-ultimate-btn" onclick="toggleChat()">
     <!-- Remplace le lien ci-dessous par l'URL de ton image (Pinata, Google, etc.) -->
-        <img src="https://emerald-immense-sole-618.mypinata.cloud/ipfs/bafybeifu57c5zotybcapneeetycn7d5p2bcqcfc4acme2hpagzf3xxysm4" alt="SL IA" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; filter: none !important;">
+        <img src="https://emerald-immense-sole-618.mypinata.cloud/ipfs/bafkreifdvv66rehuyawaikygxwvggmeyqhrh3abwmcs23gvwlb7gkht57i" alt="SL IA" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; filter: none !important;">
     </button>
 
     <div id="ai-ultimate-window">
-        <div class="ai-header-gold">
-            <span>Concierge - SL Excellence</span>
-            <span onclick="toggleChat()" style="cursor:pointer; font-size:28px; line-height:1;">&times;</span>
-        </div>
-        <div id="ai-box"></div>
-        <div class="ai-footer">
-            <input type="text" id="ai-input-text" placeholder="Tapez ici...">
+    <div class="ai-header-gold">
+        <!-- Groupe Gauche : WhatsApp VERT + Titre -->
+        <div style="display: flex; align-items: center; gap: 12px;">
             <a id="wa-switch-link" href="#" target="_blank" style="display: flex !important; align-items: center;">
-                <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="28" style="transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                <!-- On a enlevé le filter: brightness(0) pour retrouver le vert -->
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="22" style="transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
             </a>
+            <span style="color: #000;">Concierge - SL Excellence</span>
         </div>
+        
+        <!-- Groupe Droite : Croix de fermeture -->
+        <span onclick="toggleChat()" style="cursor:pointer; font-size:28px; line-height:1; color: #000;">&times;</span>
+    </div>
+
+    <div id="ai-box"></div>
+
+    <div class="ai-footer">
+        <!-- L'input prend toute la place en bas -->
+        <input type="text" id="ai-input-text" placeholder="Tapez ici..." style="width: 100% !important;">
     </div>
 </div>
 
@@ -728,10 +737,10 @@ body:has(#side-menu.open) #ai-master-portal {
 
     const lang = getLang();
     const greets = {
-        'fr': ['Bonjour, je suis l\'assistant de SL Excellence.', 'En quoi puis-je vous aider ?'],
-        'es': ['Hola, soy el asistente de SL Excellence.', '¿En qué puedo ayudarle?'],
+        'fr': ['Bonjour, je suis l\'assistante de SL Excellence.', 'En quoi puis-je vous aider ?'],
+        'es': ['Hola, soy la asistente de SL Excellence.', '¿En qué puedo ayudarle?'],
         'en': ['Hello, I am the SL Excellence assistant.', 'How can I help you?'],
-        'it': ['Buongiorno, sono l\'assistant di SL Excellence.', 'Come posso aiutarla?']
+        'it': ['Buongiorno, sono l\'assistante di SL Excellence.', 'Come posso aiutarla?']
     };
 
     const win = document.getElementById('ai-ultimate-window');
@@ -776,7 +785,7 @@ body:has(#side-menu.open) #ai-master-portal {
         div.style.webkitUserSelect = "none";
 
         const timer = setInterval(() => {
-            div.innerHTML = `<b>IA :</b> ` + linkify(text.substr(0, i));
+            div.innerHTML = linkify(text.substr(0, i));
             i++;
             box.scrollTop = box.scrollHeight;
             if (i > text.length) { 
