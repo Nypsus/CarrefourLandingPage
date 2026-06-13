@@ -568,11 +568,11 @@ body:has(#side-menu.open) #ai-master-portal {
 @media (max-width: 767px) {
 /* --- TAILLE DU ROBOT SUR Mobil --- */
     #ai-ultimate-btn {
-        width: 80px !important;   /* Modifie cette valeur pour la TAILLE */
-        height: 80px !important;  /* Doit être identique à width */
-        bottom: 40px !important;  /* Modifie pour monter/descendre le robot */
-        right: -3px !important;   /* Modifie pour l'éloigner du bord droit */
-    }
+    width: 80px !important;
+    height: 80px !important;
+    bottom: 0px !important;  /* <--- Change 40px par 0px pour le coller en bas */
+    right: -3px !important;
+}
 
     #ai-master-portal, #ai-master-portal * {
         /* Supprime le rectangle de focus au clic */
@@ -603,38 +603,59 @@ body:has(#side-menu.open) #ai-master-portal {
 
 
     #ai-ultimate-window {
-        /* On force le collage parfait aux 4 coins */
-        top: 0 !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        
-        width: 100% !important;
-        max-width: 100% !important;
-        height: 100dvh !important; /* d pour dynamique : gère le clavier */
-        max-height: 100dvh !important;
-        
-        /* FOND TOTALEMENT OPAQUE pour ne plus voir le site derrière */
-        background: #020c1b !important; 
-        
-        border-radius: 0 !important;
-        border: none !important;
-        z-index: 2147483640 !important;
-    }
+    bottom: 0px !important; /* On le colle au bas du chat */
+top: auto !important;    /* On annule ton "top: 490px" qui cause le décalage */
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important; 
+    max-height: 100dvh !important;
+    background: #020c1b !important; 
+    border-radius: 0 !important;
+    border: none !important;
+    z-index: 2147483640 !important;
+    
+    
+    /* AJOUTE CETTE LIGNE ICI */
+    overscroll-behavior: none !important; 
+    
+}
 
+#ai-box {
+    flex: 1 !important; /* Prend tout l'espace libre au milieu */
+    overflow-y: auto !important; /* AUTORISE LE SCROLL ICI UNIQUEMENT */
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 20px !important;
+    height: auto !important; /* Très important pour le Flexbox */
+    -webkit-overflow-scrolling: touch !important; /* Scroll fluide iOS */
+    overscroll-behavior: contain !important; /* EMPECHE LE REBOND DE LA FENETRE */
+}
+
+
+body.ai-opened {
+    position: fixed !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+}
     /* POSITION DU BOT OUVERT */
     /* --- DESIGN MOBILE : ROBOT QUAND LA CONVERSATION EST OUVERTE --- */
     .ai-opened #ai-ultimate-btn {
-        bottom: auto !important;
-        top: 490px !important;    /* Position par rapport au haut */
-        right: 0px !important;   /* Position par rapport à la droite */
-        width: 120px !important;  /* TAILLE : Largeur */
-        height: 120px !important; /* TAILLE : Hauteur */
-        animation: none !important;
-        z-index: 2147483647 !important;
-        pointer-events: none !important; 
-        opacity: 1 !important;
-    }
+    bottom: 0px !important; /* <--- Change "auto" par 0px pour le fixer au sol */
+    top: auto !important;    /* <--- Change 490px par auto */
+    right: 0px !important; 
+    width: 120px !important; 
+    height: 120px !important;
+    animation: none !important;
+    z-index: 2147483647 !important;
+    pointer-events: none !important; 
+    opacity: 1 !important;
+}
+
+
 
     /* On remet l'image droite (sans le décalage de 20px) quand c'est ouvert */
     .ai-opened #ai-ultimate-btn img {
@@ -646,6 +667,24 @@ body:has(#side-menu.open) #ai-master-portal {
         font-size: 16px !important; 
     }
 
+    #ai-box {
+    flex: 1 !important;
+    padding: 20px !important;
+    overflow-y: auto !important;
+    height: 0 !important; /* <--- AJOUTE ÇA : ça force le scroll interne */
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    background: transparent !important;
+}
+
+    
+.ai-footer {
+    position: relative !important; /* Pour rester dans le flux du bas */
+    margin-top: auto !important;
+    flex-shrink: 0 !important; /* <--- C'EST CETTE LIGNE QUI BLOQUE L'INPUT EN BAS */
+    position: relative !important;
+  }
 
 }
 
@@ -709,6 +748,16 @@ body:has(#side-menu.open) #ai-master-portal {
 </div>
 
 <script>
+  document.addEventListener('touchmove', function(e) {
+    if (document.body.classList.contains('ai-opened')) {
+        // Si on ne touche PAS la zone des messages, on annule le mouvement
+        if (!e.target.closest('#ai-box')) {
+            e.preventDefault();
+        }
+    }
+}, { passive: false });
+
+
     function refreshCalendar() {
     const container = document.querySelector('.calendar-wrapper div[style*="filter"]');
     const iframe = container ? container.querySelector('iframe') : null;
@@ -805,31 +854,73 @@ body:has(#side-menu.open) #ai-master-portal {
     }
 }
 
-    window.toggleChat = function() {
-        const portal = document.getElementById('ai-master-portal');
-        const isOpen = win.style.display === 'flex';
-        
-        win.style.display = isOpen ? 'none' : 'flex';
-        
-        if (!isOpen) {
-            portal.classList.add('ai-opened');
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.backgroundColor = '#020c1b'; 
-        } else {
-            portal.classList.remove('ai-opened');
-            document.body.style.overflow = '';
-            document.documentElement.style.backgroundColor = ''; 
-        }
-        
-        localStorage.setItem('sl_chat_open', !isOpen);
-        // Mise à jour de l'activité quand on ouvre le chat
-        localStorage.setItem('sl_last_interaction', Date.now());
+    let scrollPos = 0; // Pour mémoriser où tu étais sur le site
 
-        if (!isOpen && box.innerHTML === "") {
+window.toggleChat = function() {
+    const portal = document.getElementById('ai-master-portal');
+    const win = document.getElementById('ai-ultimate-window');
+    const isOpen = win.style.display === 'flex';
+    
+    if (!isOpen) {
+        scrollPos = window.scrollY; // Sauvegarde ta position
+        win.style.display = 'flex';
+        portal.classList.add('ai-opened');
+        document.body.classList.add('ai-opened'); // Fige le site
+        
+        // Fix hauteur immédiat
+        if(window.visualViewport) win.style.height = window.visualViewport.height + 'px';
+        
+        if (box.innerHTML === "") {
             const msgs = greets[lang] || greets['fr'];
             showTyping(() => appendMsg(msgs[0], 'ia', () => setTimeout(() => showTyping(() => appendMsg(msgs[1], 'ia')), 600)));
         }
-    };
+    } else {
+        win.style.display = 'none';
+        portal.classList.remove('ai-opened');
+        document.body.classList.remove('ai-opened'); // Libère le site
+        window.scrollTo(0, scrollPos); // Te remet au bon endroit sur le site
+    }
+};
+
+
+// --- FIX RADICAL CLAVIER IPHONE/ANDROID ---
+// --- DÉTECTION DU CLAVIER POUR POUSSER LE TEXTE ET LE BOT ---
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', () => {
+        if (document.body.classList.contains('ai-opened')) {
+            const vv = window.visualViewport;
+            const win = document.getElementById('ai-ultimate-window');
+            
+            // On ajuste la hauteur pour laisser la place au clavier
+            win.style.height = vv.height + 'px';
+            
+            // On bloque le "top" sur l'offset du viewport pour ne pas voir le site dessous
+            win.style.top = vv.offsetTop + 'px';
+
+            // On force le scroll en bas des messages
+            const box = document.getElementById('ai-box');
+            if (box) box.scrollTop = box.scrollHeight;
+        }
+    });
+}
+
+// Empêcher l'iPhone de décaler tout le site quand on clique sur l'input
+const inputField = document.getElementById('ai-input-text');
+inputField.addEventListener('focus', () => {
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+    }, 50);
+});
+
+// Empeche le "pull-to-refresh" et le scroll du site derrière
+document.addEventListener('touchmove', function(e) {
+    if (document.body.classList.contains('ai-opened')) {
+        if (!e.target.closest('#ai-box')) {
+            e.preventDefault();
+        }
+    }
+}, { passive: false });
 
     async function handleChatSubmit() {
         const msg = input.value.trim();
