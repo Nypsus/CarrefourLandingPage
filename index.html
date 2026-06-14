@@ -395,14 +395,19 @@ function changeLanguage(langCode) {
      ========================================== -->
 <div id="ai-master-portal" style="position: fixed !important; z-index: 2147483647 !important;">
     <style>
-        body:has(#mobile-menu:not(.hidden)) #ai-master-portal,
-body:has(#side-menu.open) #ai-master-portal {
+        body:not(.ai-opened):has(#mobile-menu:not(.hidden)) #ai-master-portal,
+body:not(.ai-opened):has(#side-menu.open) #ai-master-portal {
     pointer-events: none !important;
     opacity: 0.2 !important; /* Il devient un fantôme comme tu voulais */
     z-index: 0 !important;   /* Il passe derrière les menus */
     transition: opacity 0.4s ease;
 }
-
+/* On force pointer-events à AUTO dès que le chat est ouvert */
+body.ai-opened #ai-master-portal {
+    pointer-events: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
         #ai-master-portal * { font-family: 'Montserrat', sans-serif !important; box-sizing: border-box !important; margin: 0; padding: 0; }
         
         /* FENÊTRE : ANCRAGE BAS-DROITE + FOND OPAQUE + GLASS */
@@ -425,7 +430,7 @@ body:has(#side-menu.open) #ai-master-portal {
             
             /* MODIF : On le met à 46 pour que le bot à 47 passe devant */
             z-index: 2147483646 !important; 
-            
+            pointer-events: auto !important;
             overflow: hidden !important;
             isolation: isolate !important;
         }
@@ -570,9 +575,16 @@ body:has(#side-menu.open) #ai-master-portal {
     #ai-ultimate-btn {
     width: 80px !important;
     height: 80px !important;
-    bottom: 0px !important;  /* <--- Change 40px par 0px pour le coller en bas */
+    bottom: 40px !important;  /* <--- Change 40px par 0px pour le coller en bas */
     right: -3px !important;
 }
+@supports (-webkit-touch-callout: none) {
+        #ai-ultimate-btn {
+            /* On baisse la valeur pour compenser la barre Safari. 
+               Teste entre 0px et 10px pour que ça ne vole plus. */
+            bottom: -15px !important; 
+        }
+       }
 
     #ai-master-portal, #ai-master-portal * {
         /* Supprime le rectangle de focus au clic */
@@ -615,6 +627,10 @@ top: auto !important;    /* On annule ton "top: 490px" qui cause le décalage */
     border-radius: 0 !important;
     border: none !important;
     z-index: 2147483640 !important;
+    /* Ajoute ça pour forcer Safari à créer une couche de rendu propre */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    
     
     
     /* AJOUTE CETTE LIGNE ICI */
@@ -665,6 +681,9 @@ body.ai-opened {
     /* EMPÊCHER LE ZOOM iOS lors du clic sur le texte */
     #ai-input-text { 
         font-size: 16px !important; 
+        pointer-events: auto !important;
+        -webkit-user-select: text !important; /* Autorise la sélection sur Safari */
+        user-select: text !important;
     }
 
     #ai-box {
@@ -684,6 +703,8 @@ body.ai-opened {
     margin-top: auto !important;
     flex-shrink: 0 !important; /* <--- C'EST CETTE LIGNE QUI BLOQUE L'INPUT EN BAS */
     position: relative !important;
+    pointer-events: auto !important; /* Force l'interactivité */
+    z-index: 2147483647 !important; /* Un de plus que la fenêtre */
   }
 
 }
@@ -862,12 +883,17 @@ window.toggleChat = function() {
     const isOpen = win.style.display === 'flex';
     
     if (!isOpen) {
-        scrollPos = window.scrollY; // Sauvegarde ta position
+        scrollPos = window.scrollY;
         win.style.display = 'flex';
         portal.classList.add('ai-opened');
-        document.body.classList.add('ai-opened'); // Fige le site
+        document.body.classList.add('ai-opened');
+
+        // Correction Safari : Focus après l'affichage
+        setTimeout(() => {
+            input.focus();
+            window.scrollTo(0, 0); // Force le haut de page
+        }, 400); 
         
-        // Fix hauteur immédiat
         if(window.visualViewport) win.style.height = window.visualViewport.height + 'px';
         
         if (box.innerHTML === "") {
@@ -877,8 +903,8 @@ window.toggleChat = function() {
     } else {
         win.style.display = 'none';
         portal.classList.remove('ai-opened');
-        document.body.classList.remove('ai-opened'); // Libère le site
-        window.scrollTo(0, scrollPos); // Te remet au bon endroit sur le site
+        document.body.classList.remove('ai-opened');
+        window.scrollTo(0, scrollPos);
     }
 };
 
@@ -968,6 +994,18 @@ document.addEventListener('touchmove', function(e) {
 
     input.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleChatSubmit(); });
 
+    // RESET SAFARI au moment où le clavier se ferme
+    input.addEventListener('blur', () => {
+        if (document.body.classList.contains('ai-opened')) {
+            setTimeout(() => {
+                const win = document.getElementById('ai-ultimate-window');
+                window.scrollTo(0, 0); // Remet le site à zéro
+                win.style.top = '0px';  // Recale le chat en haut
+                win.style.height = '100dvh'; // Redonne toute la hauteur
+            }, 100);
+        }
+    });
+
     // --- LOGIQUE DE NETTOYAGE VISUEL (Initialisation) ---
     const NOW = Date.now();
     const TWO_HOURS = 2 * 60 * 60 * 1000;
@@ -989,6 +1027,9 @@ document.addEventListener('touchmove', function(e) {
     if (saved) box.innerHTML = saved;
     if (localStorage.getItem('sl_chat_open') === 'true') toggleChat();
 })();
+
+
+
 </script>
 </body>
 </html>
