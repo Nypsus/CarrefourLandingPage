@@ -962,7 +962,7 @@ document.addEventListener('touchmove', function(e) {
                 const r = await fetch(SERVER_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: msg, user_id: localStorage.getItem('sl_user_id') })
+                    body: JSON.stringify({ message: msg, user_id: window.FINAL_USER_ID })
                 });
                 const d = await r.json();
 
@@ -1029,7 +1029,16 @@ document.addEventListener('touchmove', function(e) {
 })();
 
 
+// --- SYSTÈME DE TRACKING AFFILIÉ ---
+const affId = urlParams.get('aff');
+if (affId) {
+    // On enregistre l'ID de l'affilié dans le navigateur du client pendant 30 jours
+    localStorage.setItem('sl_affiliate_id', affId);
+    console.log("Partenaire tracké : " + affId);
+}
 
+// Quand le client prend rendez-vous via l'IA, tu récupères l'ID comme ça :
+const savedAffiliate = localStorage.getItem('sl_affiliate_id') || "Direct (aucun)";
 </script>
 </body>
 </html>
